@@ -1,10 +1,8 @@
-import { Mail, Lock } from "lucide-react"
+import { Mail, Lock, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import Link from "next/link";
 
-
-export default function LoginPage() {
+export default function SignUpPage() {
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gray-200">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -25,10 +23,6 @@ export default function LoginPage() {
         </div>
       </div>
 
-      <div className="absolute top-8 md:top-12 left-1/2 -translate-x-1/2 z-20">
-        {/* Avatar removed, now inside form */}
-      </div>
-
       <div className="relative z-10 w-full max-w-md px-4 md:px-6">
         <div className="bg-white/95 backdrop-blur-sm p-6 md:p-8 rounded-lg shadow-2xl border border-gray-300">
           {/* Logo Icon */}
@@ -38,15 +32,26 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* LOGIN heading */}
-          <h2 className="text-3xl md:text-5xl font-bold text-center text-gray-900 mb-8 md:mb-10">LOGIN</h2>
+          {/* SIGN UP heading */}
+          <h2 className="text-3xl md:text-5xl font-bold text-center text-gray-900 mb-8 md:mb-10">SIGN UP</h2>
 
-          {/* Login form */}
+          {/* Sign up form */}
           <form className="space-y-4 md:space-y-5">
+            {/* Full Name input */}
             <div className="relative">
               <Input
                 type="text"
-                placeholder="E-mail/Phone Number"
+                placeholder="Full Name"
+                className="h-12 md:h-14 pr-10 md:pr-12 border-2 md:border-[3px] border-black bg-white text-gray-900 placeholder:text-gray-900 rounded-none font-serif text-sm md:text-base"
+              />
+              <User className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 text-gray-900" />
+            </div>
+
+            {/* Email input */}
+            <div className="relative">
+              <Input
+                type="email"
+                placeholder="E-mail"
                 className="h-12 md:h-14 pr-10 md:pr-12 border-2 md:border-[3px] border-black bg-white text-gray-900 placeholder:text-gray-900 rounded-none font-serif text-sm md:text-base"
               />
               <Mail className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 text-gray-900" />
@@ -62,11 +67,21 @@ export default function LoginPage() {
               <Lock className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 text-gray-900" />
             </div>
 
-            {/* Sign up link */}
+            {/* Confirm Password input */}
+            <div className="relative">
+              <Input
+                type="password"
+                placeholder="Confirm Password"
+                className="h-12 md:h-14 pr-10 md:pr-12 border-2 md:border-[3px] border-black bg-white text-gray-900 placeholder:text-gray-900 rounded-none font-serif text-sm md:text-base"
+              />
+              <Lock className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 text-gray-900" />
+            </div>
+
+            {/* Login link */}
             <div className="text-left text-xs md:text-sm pt-1">
-              <span className="text-gray-900 font-serif">Don&apos;t have an account? </span>
-              <a href="/sign_up" className="text-gray-900 font-serif font-bold underline">
-                Sign Up
+              <span className="text-gray-900 font-serif">Already have an account? </span>
+              <a href="/" className="text-gray-900 font-serif font-bold underline">
+                Login
               </a>
             </div>
 
@@ -75,7 +90,7 @@ export default function LoginPage() {
                 type="submit"
                 className="w-32 md:w-40 h-8 md:h-10 bg-white text-gray-900 border-2 border-black hover:bg-gray-100 text-sm md:text-base font-bold rounded-md font-serif"
               >
-                LOGIN
+                SIGN UP
               </Button>
             </div>
           </form>
