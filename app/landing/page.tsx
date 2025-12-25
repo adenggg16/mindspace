@@ -112,7 +112,6 @@ export default function Home() {
                 This brief form helps us get to know you better, so our psychologists can provide more personalized and
                 supportive conversations.
               </p>
-
             </div>
 
             {/* Feature 3: Mental Health Articles */}
