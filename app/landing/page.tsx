@@ -13,11 +13,17 @@ export default function Home() {
           />
         </svg>
       </div>
-      {/* Navbar */}
-      <nav className="relative z-10 flex items-center justify-between p-4 md:p-6">
+        {/* Navbar */}
+      <nav className="relative z-10 flex items-center justify-between p-4 md:p-6 ">
+        {/* Logo & Title - Kiri */}
         <div className="flex items-center gap-2 md:gap-3">
           <img src="/images/logo.png" alt="MindSpace Logo" className="w-8 h-8 md:w-10 md:h-10" />
-          <h1 className="text-2xl md:text-3xl font-serif text-[#e17b9e] tracking-wide">MindSpace</h1>
+          <div>
+            <h1 className="text-2xl font-bold">
+              Mind<span className="text-[#e17b9e]">Space</span>
+            </h1>
+            <p className="text-sm text-gray-400">A quiet space for your thoughts.</p>
+          </div>
         </div>
         <div className="flex gap-4">
           <Link href="/login">
@@ -26,7 +32,9 @@ export default function Home() {
             </Button>
           </Link>
           <Link href="/sign_up">
-            <Button className="bg-[#B58D97] hover:bg-[#d4779b] text-white">SIGN-UP</Button>
+            <Button className="bg-[#B58D97] hover:bg-[#d4779b] text-white">
+              SIGN-UP
+            </Button>
           </Link>
         </div>
       </nav>
@@ -69,7 +77,7 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="relative z-10 mt-8 py-16 px-6 md:px-8 bg-white/95 backdrop-blur-sm mx-4 md:mx-8 rounded-2xl shadow-xl">
+      <section className="relative z-10 mt-8 py-16 px-6 md:px-8 bg-white/95 backdrop-blur-sm mx-4 md:mx-8 rounded-2xl shadow-xl mb-32 md:mb-48">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12 leading-tight">
             Featured Features of MindSpace
@@ -80,13 +88,12 @@ export default function Home() {
               <div className="w-32 h-32 mx-auto mb-6 flex items-center justify-center">
                 <img src="/images/talk.png" alt="Talk to us icon" className="w-full h-full object-contain" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Talk to us</h3>
+              <Button className="bg-gray-900 hover:bg-gray-800 text-white px-6 py-2 rounded-full">Talk to us</Button>
               <p className="text-gray-700 leading-relaxed mb-6 text-sm">
                 Connect directly with licensed psychologists through a secure chat feature. Before starting a
                 consultation, users are guided to complete a mental health record to help psychologists understand your
                 concerns more accurately and responsibly.
               </p>
-              <Button className="bg-gray-900 hover:bg-gray-800 text-white px-6 py-2 rounded-full">Talk to us</Button>
             </div>
 
             {/* Feature 2: Get to Know You */}
@@ -98,14 +105,14 @@ export default function Home() {
                   className="w-full h-full object-contain"
                 />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Get to Know You</h3>
+              <Button className="bg-gray-900 hover:bg-gray-800 text-white px-6 py-2 rounded-full">
+                Get to Know You
+              </Button>
               <p className="text-gray-700 leading-relaxed mb-6 text-sm">
                 This brief form helps us get to know you better, so our psychologists can provide more personalized and
                 supportive conversations.
               </p>
-              <Button className="bg-gray-900 hover:bg-gray-800 text-white px-6 py-2 rounded-full">
-                Get to Know You
-              </Button>
+
             </div>
 
             {/* Feature 3: Mental Health Articles */}
@@ -117,22 +124,23 @@ export default function Home() {
                   className="w-full h-full object-contain"
                 />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Mental Health Articles</h3>
+              <Button className="bg-gray-900 hover:bg-gray-800 text-white px-6 py-2 rounded-full">
+                Mental Health Articles
+              </Button>
               <p className="text-gray-700 leading-relaxed mb-6 text-sm">
                 Access curated, evidence-based articles from trusted psychological journals covering topics such as
                 stress management, emotional regulation, anxiety, and self-care.
               </p>
-              <Button className="bg-gray-900 hover:bg-gray-800 text-white px-6 py-2 rounded-full">
-                Mental Health Articles
-              </Button>
             </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 bg-white/95 backdrop-blur-sm py-8 text-center mx-4 md:mx-8 rounded-lg shadow-xl">
-        <p className="text-gray-900">&copy; 2025 MindSpace. All rights reserved.</p>
+      <footer className="relative z-10 bg-white py-12 text-center shadow-lg">
+       <div className="max-w-6xl mx-auto px-6">
+          <p className="text-gray-900">&copy; 2025 MindSpace. All rights reserved.</p>
+        </div>
       </footer>
     </div>
   )
