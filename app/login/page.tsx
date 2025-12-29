@@ -1,79 +1,104 @@
+"use client"
+
 import { Mail, Lock } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import Link from "next/link";
-
+import { useState } from "react"
+import { signInWithEmailAndPassword } from "firebase/auth"
+import { auth } from "@/lib/firebase"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 export default function LoginPage() {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const router = useRouter()
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      await signInWithEmailAndPassword(auth, email, password)
+      alert("Login berhasil 🎉")
+      router.push("/dashboard")
+    } catch (error) {
+      alert("Email atau password salah!")
+    }
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gray-200">
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-[#E5E7EB]">
+      {/* Background Gelombang Navy Pekat sesuai Figma */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1000 1000" preserveAspectRatio="none">
-          {/* Smooth flowing S-curve from top-right down through the page */}
           <path
-            d="M 1000 0 L 600 0 Q 500 100, 480 250 Q 460 400, 500 550 Q 540 700, 480 850 Q 450 950, 350 1000 L 1000 1000 Z"
-            fill="#1a2e4a"
+            d="M 1000 0 L 600 0 Q 450 150, 480 350 Q 510 550, 400 750 Q 300 900, 200 1000 L 1000 1000 Z"
+            fill="#0F172A" 
           />
         </svg>
       </div>
 
-      {/* MindSpace Logo - Top Left */}
-      <div className="absolute top-4 left-4 md:top-8 md:left-8 z-20">
-        <div className="flex items-center gap-2 md:gap-3">
-          <img src="/images/logo.png" alt="MindSpace Logo" className="w-8 h-8 md:w-12 md:h-12" />
-          <h1 className="text-2xl md:text-4xl font-serif text-[#e17b9e] tracking-wide">MindSpace</h1>
-        </div>
-      </div>
+      <div className="relative z-10 w-full max-w-[420px] px-6">
+        {/* Kontainer Putih Utama */}
+        <div className="bg-white p-10 rounded-[25px] shadow-2xl relative border border-gray-100">
+          
+          {/* Logo MindSpace - Posisi di DALAM box pojok kiri atas */}
+          <div className="absolute top-6 left-8 flex items-center gap-1">
+            <span className="text-[#F87171] text-xl leading-none">●</span>
+            <span className="text-xl font-bold tracking-tighter text-[#1e293b]">
+              Mind<span className="text-[#F87171]">Space</span>
+            </span>
+          </div>
 
-      <div className="absolute top-8 md:top-12 left-1/2 -translate-x-1/2 z-20">
-        {/* Avatar removed, now inside form */}
-      </div>
-
-      <div className="relative z-10 w-full max-w-md px-4 md:px-6">
-        <div className="bg-white/95 backdrop-blur-sm p-6 md:p-8 rounded-lg shadow-2xl border border-gray-300">
-          {/* Logo Icon */}
-          <div className="flex justify-center mb-6">
-            <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-linear-to-br from-[#e8a5ba] to-[#d4779b] flex items-center justify-center shadow-lg border-4 border-gray-300">
-              <img src="/images/logo.png" alt="MindSpace Logo" className="w-12 h-12 md:w-16 md:h-16 rounded-full" />
+          {/* Ikon Profil Lingkaran Pink Tengah */}
+          <div className="flex justify-center mb-6 mt-8">
+            <div className="w-20 h-20 bg-[#FBCFE8] rounded-full border-[4px] border-white shadow-md flex items-center justify-center">
+               <div className="w-10 h-10 border-4 border-[#1E293B] opacity-10 rotate-45"></div>
             </div>
           </div>
 
-          {/* LOGIN heading */}
-          <h2 className="text-3xl md:text-5xl font-bold text-center text-gray-900 mb-8 md:mb-10">LOGIN</h2>
+          {/* Header LOGIN - Font Black & Rapat */}
+          <h2 className="text-[42px] font-[900] text-center mb-10 tracking-tighter text-[#1e293b] leading-none">
+            LOGIN
+          </h2>
 
-          {/* Login form */}
-          <form className="space-y-4 md:space-y-5">
+          <form onSubmit={handleLogin} className="space-y-5">
+            {/* Input E-mail - Border Hitam Tebal & Kotak Tajam */}
             <div className="relative">
               <Input
-                type="text"
+                type="email"
                 placeholder="E-mail/Phone Number"
-                className="h-12 md:h-14 pr-10 md:pr-12 border-2 md:border-[3px] border-black bg-white text-gray-900 placeholder:text-gray-900 rounded-none font-serif text-sm md:text-base"
+                className="pr-12 border-[2px] border-black rounded-none h-[50px] font-medium focus-visible:ring-0 placeholder:text-gray-400"
+                onChange={(e) => setEmail(e.target.value)}
+                required
               />
-              <Mail className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 text-gray-900" />
+              <Mail className="absolute right-4 top-1/2 -translate-y-1/2 text-black" size={20} />
             </div>
 
-            {/* Password input */}
+            {/* Input Password */}
             <div className="relative">
               <Input
                 type="password"
                 placeholder="Password"
-                className="h-12 md:h-14 pr-10 md:pr-12 border-2 md:border-[3px] border-black bg-white text-gray-900 placeholder:text-gray-900 rounded-none font-serif text-sm md:text-base"
+                className="pr-12 border-[2px] border-black rounded-none h-[50px] font-medium focus-visible:ring-0 placeholder:text-gray-400"
+                onChange={(e) => setPassword(e.target.value)}
+                required
               />
-              <Lock className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 text-gray-900" />
+              <Lock className="absolute right-4 top-1/2 -translate-y-1/2 text-black" size={20} />
             </div>
 
-            {/* Sign up link */}
-            <div className="text-left text-xs md:text-sm pt-1">
-              <span className="text-gray-900 font-serif">Don&apos;t have an account? </span>
-              <a href="/sign_up" className="text-gray-900 font-serif font-bold underline">
+            {/* Link Sign Up - Kecil & Italic */}
+            <div className="text-[10px] text-gray-500 italic">
+              Don't have an account?{" "}
+              <Link href="/sign_up" className="font-bold text-black underline not-italic">
                 Sign Up
-              </a>
+              </Link>
             </div>
 
-            <div className="flex justify-center pt-3 md:pt-4">
-              <Button
-                type="submit"
-                className="w-32 md:w-40 h-8 md:h-10 bg-white text-gray-900 border-2 border-black hover:bg-gray-100 text-sm md:text-base font-bold rounded-md font-serif"
+            {/* Tombol LOGIN - Bulat dengan Shadow Hitam Kaku */}
+            <div className="flex justify-center pt-4">
+              <Button 
+                type="submit" 
+                className="px-12 py-2 bg-white text-black border-[2.5px] border-black hover:bg-gray-100 font-[900] rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-y-1 active:shadow-none"
               >
                 LOGIN
               </Button>

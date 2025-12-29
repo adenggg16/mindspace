@@ -18,7 +18,7 @@ export default function ReflectionSection({
   return (
     <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-xl mb-8">
       <h2 className="text-3xl font-bold text-gray-900 mb-2">Take a moment to reflect on how you feel today.</h2>
-      <p className="text-gray-700 mb-6">Write your thoughts here...</p>
+      
 
       <textarea
         value={reflection}
