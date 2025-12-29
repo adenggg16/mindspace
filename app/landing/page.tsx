@@ -112,7 +112,6 @@ export default function Home() {
                 This brief form helps us get to know you better, so our psychologists can provide more personalized and
                 supportive conversations.
               </p>
-
             </div>
 
             {/* Feature 3: Mental Health Articles */}
@@ -139,7 +138,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="relative z-10 bg-white py-12 text-center shadow-lg">
        <div className="max-w-6xl mx-auto px-6">
-          <p className="text-gray-900">&copy; 2024 MindSpace. All rights reserved.</p>
+          <p className="text-gray-900">&copy; 2025 MindSpace. All rights reserved.</p>
         </div>
       </footer>
     </div>
