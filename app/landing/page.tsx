@@ -33,7 +33,7 @@ export default function Home() {
           </Link>
           <Link href="/sign_up">
             <Button className="bg-[#B58D97] hover:bg-[#d4779b] text-white">
-              SIGN-UP
+              SIGN-Up
             </Button>
           </Link>
         </div>
