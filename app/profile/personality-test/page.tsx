@@ -21,7 +21,7 @@ const profileData: ProfileData = {
   email: "bismillahrrpla@gmail.com",
   phone: "+62 876543296",
   socialHandle: "rpl_kelompakkece",
-  image: "/images/profile-avatar.png",
+  image: "/images/adel.png",
 }
 
 export default function PersonalityTestPage() {
