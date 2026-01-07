@@ -21,7 +21,7 @@ export default function DashboardHome() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-200">
+    <div className="min-h-screen flex flex-col bg-blue-100">
       <DashboardNavbar />
 
       <main className="flex-1 px-6 py-12 md:px-8 max-w-6xl mx-auto w-full">
