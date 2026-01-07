@@ -16,13 +16,13 @@ interface ProfileData {
 }
 
 const profileData: ProfileData = {
-  name: "RPL",
+  name: "Salsabila Adelia Putrie",
   birthDate: "December, 7, 2000",
   location: "Singapore, Indonesia",
-  email: "bismillahrrpla@gmail.com",
+  email: "adeng16.gmail.com",
   phone: "+62 876543296",
   socialHandle: "rpl_kelompakkece",
-  image: "/images/profile-avatar.png",
+  image: "/images/adel.png",
 }
 
 export default function ProfilePage() {
