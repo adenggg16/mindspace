@@ -11,7 +11,7 @@ export default function NotificationsPage() {
   const [newArticles, setNewArticles] = useState(true)
 
   return (
-    <div className="min-h-screen bg-[#1a2e4a]">
+    <div className="min-h-screen flex flex-col bg-blue-100">
       <DashboardNavbar />
 
       <div className="max-w-6xl mx-auto px-4 md:px-8 py-12">
