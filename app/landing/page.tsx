@@ -1,5 +1,8 @@
+"use client"
+
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import Snowfall from "react-snowfall"
 
 export default function Home() {
   return (
@@ -38,6 +41,9 @@ export default function Home() {
           </Link>
         </div>
       </nav>
+
+      {/* Snowfall Effect */}
+      <Snowfall />
 
       {/* Hero Section */}
       <main className="relative z-10 flex flex-col items-center justify-center min-h-[80vh] px-4 text-center">

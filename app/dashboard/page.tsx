@@ -6,6 +6,7 @@ import MoodSelector from "@/components/dashboard/mood-selector"
 import ReflectionSection from "@/components/dashboard/reflection-section"
 import ExploreFeatures from "@/components/dashboard/explore-features"
 
+
 export default function DashboardHome() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null)
   const [reflection, setReflection] = useState("")
