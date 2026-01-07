@@ -37,7 +37,7 @@ export default function SecuritySettingsPage() {
               email="bismillahrpla@gmail.com"
               phone="+62 8765432%"
               socialHandle="rpl_kelompokce"
-              imageUrl="/profile-photo.jpg"
+              imageUrl="/images/adel.png"
             />
           </div>
 
