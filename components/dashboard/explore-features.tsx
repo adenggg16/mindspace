@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
 export default function ExploreFeatures() {
@@ -7,18 +8,21 @@ export default function ExploreFeatures() {
       title: "Talk to us",
       description: `Connect directly with licensed psychologists through a secure chat feature. Before starting a consultation, users are guided to complete a mental health record to help psychologists understand your concerns more accurately and responsibly.`,
       icon: "/images/talk.png",
+      href: "/counseling",
     },
     {
       id: "get-to-know-you",
       title: "Get to Know You",
       description: `This brief form helps us get to know you better, so our psychologists can provide more personalized and supportive conversations.`,
       icon: "/images/get.png",
+      href: "/profile",
     },
     {
       id: "mental-health-articles",
       title: "Mental Health Articles",
       description: `Access curated, evidence-based articles from trusted psychological journals covering topics such as stress management, emotional regulation, anxiety, and self-care.`,
       icon: "/images/mental.png",
+      href: "/articles",
     },
   ]
 
@@ -38,9 +42,11 @@ export default function ExploreFeatures() {
             </div>
             <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-3 md:mb-4">{feature.title}</h3>
             <p className="text-gray-700 leading-relaxed mb-4 md:mb-6 text-xs md:text-sm">{feature.description}</p>
-            <Button className="bg-[#1a2e4a] hover:bg-[#0f1f31] text-white px-4 md:px-6 py-2 rounded-full text-sm md:text-base">
-              {feature.title}
-            </Button>
+            <Link href={feature.href}>
+              <Button className="bg-[#1a2e4a] hover:bg-[#0f1f31] text-white px-4 md:px-6 py-2 rounded-full text-sm md:text-base">
+                {feature.title}
+              </Button>
+            </Link>
           </div>
         ))}
       </div>
