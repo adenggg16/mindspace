@@ -2,8 +2,10 @@
 
 import type React from "react"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import DashboardNavbar from "@/components/dashboard/navbar"
 import { ProfileCard } from "@/components/profile/profile-card"
+
 
 export default function SecuritySettingsPage() {
   const [formData, setFormData] = useState({
@@ -12,6 +14,7 @@ export default function SecuritySettingsPage() {
     newPassword: "",
     confirmPassword: "",
   })
+  const router = useRouter()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -19,6 +22,14 @@ export default function SecuritySettingsPage() {
       ...prev,
       [name]: value,
     }))
+  }
+
+  const handleCancel = () => {
+    router.push('/profile')
+  }
+
+  const handleSaveChanges = () => {
+    router.push('/profile')
   }
 
   return (
@@ -172,6 +183,7 @@ export default function SecuritySettingsPage() {
               <div className="flex justify-end gap-4">
                 <button
                   type="button"
+                  onClick={handleCancel}
                   className="
                     px-8 py-3
                     rounded-full
@@ -186,7 +198,8 @@ export default function SecuritySettingsPage() {
                 </button>
 
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={handleSaveChanges}
                   className="
                     px-8 py-3
                     rounded-full
