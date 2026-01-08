@@ -16,7 +16,7 @@ export default function DashboardNavbar() {
             <h1 className="text-lg md:text-2xl font-bold">
               Mind<span className="text-[#e17b9e]">Space</span>
             </h1>
-            <p className="hidden md:block text-xs md:text-sm text-gray-400">A quiet space for your thoughts.</p>
+            <p className="text-[10px] md:text-sm text-gray-400 leading-tight">A quiet space for your thoughts.</p>
           </div>
         </div>
 
