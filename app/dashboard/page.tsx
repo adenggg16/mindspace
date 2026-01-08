@@ -24,11 +24,11 @@ export default function DashboardHome() {
     <div className="min-h-screen flex flex-col bg-blue-100">
       <DashboardNavbar />
 
-      <main className="flex-1 px-6 py-12 md:px-8 max-w-6xl mx-auto w-full">
+      <main className="flex-1 px-4 md:px-6 py-8 md:py-12 max-w-6xl mx-auto w-full">
         {/* Welcome Section */}
-        <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-xl mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-4">Welcome back, RPL!</h1>
-          <p className="text-lg text-gray-700 text-center mb-8">How are you feeling today?</p>
+        <div className="bg-white/95 backdrop-blur-sm rounded-xl md:rounded-2xl p-6 md:p-12 shadow-xl mb-6 md:mb-8">
+          <h1 className="text-2xl md:text-5xl font-bold text-gray-900 text-center mb-3 md:mb-4">Welcome back, RPL!</h1>
+          <p className="text-base md:text-lg text-gray-700 text-center mb-6 md:mb-8">How are you feeling today?</p>
 
           <MoodSelector selectedMood={selectedMood} onMoodSelect={setSelectedMood} />
         </div>

@@ -53,7 +53,7 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-[#e5e7eb]">
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-[#e5e7eb] p-4">
       {/* Background Gelombang Navy */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1000 1000" preserveAspectRatio="none">
@@ -64,36 +64,36 @@ export default function SignUpPage() {
         </svg>
       </div>
 
-      <div className="relative z-10 w-full max-w-md px-6">
-        <div className="bg-white/90 backdrop-blur-sm p-8 rounded-xl shadow-2xl border border-gray-200 relative">
+      <div className="relative z-10 w-full max-w-md px-4 md:px-6">
+        <div className="bg-white/90 backdrop-blur-sm p-6 md:p-8 rounded-xl md:rounded-2xl shadow-2xl border border-gray-200 relative">
           
           {/* Logo MindSpace */}
-          <div className="absolute -top-12 left-0 text-[#1e293b] font-bold text-2xl flex items-center gap-1">
+          <div className="absolute -top-10 md:-top-12 left-4 md:left-0 text-[#1e293b] font-bold text-xl md:text-2xl flex items-center gap-1">
             <span className="text-red-500">●</span> Mind<span className="text-red-400">Space</span>
           </div>
 
           {/* Avatar Ikon Profil Pink */}
-          <div className="flex justify-center -mt-16 mb-4">
-            <div className="bg-[#fbcfe8] p-4 rounded-full border-4 border-white shadow-lg">
-              <User size={48} className="text-[#1e293b]" />
+          <div className="flex justify-center -mt-14 md:-mt-16 mb-4">
+            <div className="bg-[#fbcfe8] p-3 md:p-4 rounded-full border-3 md:border-4 border-white shadow-lg">
+              <User size={40} className="md:w-12 md:h-12 text-[#1e293b]" />
             </div>
           </div>
 
-          <h2 className="text-4xl font-black text-center mb-8 tracking-tighter text-[#1e293b]">
+          <h2 className="text-3xl md:text-4xl font-black text-center mb-6 md:mb-8 tracking-tighter text-[#1e293b]">
             SIGN UP
           </h2>
 
-          <form onSubmit={handleSignUp} className="space-y-4">
+          <form onSubmit={handleSignUp} className="space-y-3 md:space-y-4">
             {/* Input E-mail */}
             <div className="relative">
               <Input
                 type="email"
                 placeholder="E-mail"
-                className="pr-10 border-2 border-black rounded-none h-11 focus-visible:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]"
+                className="pr-10 border-2 border-black rounded-none h-10 md:h-11 text-sm md:text-base focus-visible:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]"
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
-              <Mail className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+              <Mail className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
             </div>
 
             {/* Input Phone Number */}
@@ -101,11 +101,11 @@ export default function SignUpPage() {
               <Input
                 type="tel"
                 placeholder="Phone Number"
-                className="pr-10 border-2 border-black rounded-none h-11 focus-visible:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]"
+                className="pr-10 border-2 border-black rounded-none h-10 md:h-11 text-sm md:text-base focus-visible:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]"
                 onChange={(e) => setPhone(e.target.value)}
                 required
               />
-              <Phone className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+              <Phone className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
             </div>
 
             {/* Input Password */}
@@ -113,11 +113,11 @@ export default function SignUpPage() {
               <Input
                 type="password"
                 placeholder="Password"
-                className="pr-10 border-2 border-black rounded-none h-11 focus-visible:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]"
+                className="pr-10 border-2 border-black rounded-none h-10 md:h-11 text-sm md:text-base focus-visible:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]"
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-              <Lock className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+              <Lock className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
             </div>
 
             {/* Input Confirm Password */}
@@ -125,16 +125,16 @@ export default function SignUpPage() {
               <Input
                 type="password"
                 placeholder="Confirm Password"
-                className="pr-10 border-2 border-black rounded-none h-11 focus-visible:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]"
+                className="pr-10 border-2 border-black rounded-none h-10 md:h-11 text-sm md:text-base focus-visible:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]"
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
-              <Lock className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+              <Lock className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
             </div>
 
             <div className="text-[10px] text-right text-gray-600 italic">
               Already have an account?{" "}
-              <Link href="/sign_up" className="font-bold text-black underline">
+              <Link href="/login" className="font-bold text-black underline">
                 Login
               </Link>
             </div>
@@ -143,14 +143,14 @@ export default function SignUpPage() {
               <Button 
                 type="submit" 
                 disabled={isLoading}
-                className="w-32 bg-white text-black border-2 border-black hover:bg-gray-100 font-bold rounded-full shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-transform active:translate-y-1 active:shadow-none"
+                className="w-28 md:w-32 bg-white text-xs md:text-sm text-black border-2 border-black hover:bg-gray-100 font-bold rounded-full shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-transform active:translate-y-1 active:shadow-none"
               >
                 {isLoading ? "LOADING..." : "SIGN UP"}
               </Button>
             </div>
           </form>
 
-          <p className="text-[8px] text-center mt-6 text-gray-500">
+          <p className="text-[8px] text-center mt-4 md:mt-6 text-gray-500">
             [ I agree to the Terms & Conditions and Privacy Policy ]
           </p>
         </div>

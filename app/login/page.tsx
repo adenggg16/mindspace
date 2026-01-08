@@ -26,7 +26,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-[#E5E7EB]">
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-[#E5E7EB] p-4">
       {/* Background Gelombang Navy Pekat sesuai Figma */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1000 1000" preserveAspectRatio="none">
@@ -37,41 +37,41 @@ export default function LoginPage() {
         </svg>
       </div>
 
-      <div className="relative z-10 w-full max-w-[420px] px-6">
+      <div className="relative z-10 w-full max-w-[420px] px-4 md:px-6">
         {/* Kontainer Putih Utama */}
-        <div className="bg-white p-10 rounded-[25px] shadow-2xl relative border border-gray-100">
+        <div className="bg-white p-6 md:p-10 rounded-2xl md:rounded-[25px] shadow-2xl relative border border-gray-100">
           
           {/* Logo MindSpace - Posisi di DALAM box pojok kiri atas */}
-          <div className="absolute top-6 left-8 flex items-center gap-1">
-            <span className="text-[#F87171] text-xl leading-none">●</span>
-            <span className="text-xl font-bold tracking-tighter text-[#1e293b]">
+          <div className="absolute top-4 md:top-6 left-6 md:left-8 flex items-center gap-1">
+            <span className="text-[#F87171] text-lg md:text-xl leading-none">●</span>
+            <span className="text-lg md:text-xl font-bold tracking-tighter text-[#1e293b]">
               Mind<span className="text-[#F87171]">Space</span>
             </span>
           </div>
 
           {/* Ikon Profil Lingkaran Pink Tengah */}
-          <div className="flex justify-center mb-6 mt-8">
-            <div className="w-20 h-20 bg-[#FBCFE8] rounded-full border-[4px] border-white shadow-md flex items-center justify-center">
-               <div className="w-10 h-10 border-4 border-[#1E293B] opacity-10 rotate-45"></div>
+          <div className="flex justify-center mb-6 mt-6 md:mt-8">
+            <div className="w-16 md:w-20 h-16 md:h-20 bg-[#FBCFE8] rounded-full border-2 md:border-4 border-white shadow-md flex items-center justify-center">
+               <div className="w-8 md:w-10 h-8 md:h-10 border-2 md:border-4 border-[#1E293B] opacity-10 rotate-45"></div>
             </div>
           </div>
 
           {/* Header LOGIN - Font Black & Rapat */}
-          <h2 className="text-[42px] font-[900] text-center mb-10 tracking-tighter text-[#1e293b] leading-none">
+          <h2 className="text-3xl md:text-[42px] font-[900] text-center mb-8 md:mb-10 tracking-tighter text-[#1e293b] leading-none">
             LOGIN
           </h2>
 
-          <form onSubmit={handleLogin} className="space-y-5">
+          <form onSubmit={handleLogin} className="space-y-4 md:space-y-5">
             {/* Input E-mail - Border Hitam Tebal & Kotak Tajam */}
             <div className="relative">
               <Input
                 type="email"
                 placeholder="E-mail/Phone Number"
-                className="pr-12 border-[2px] border-black rounded-none h-[50px] font-medium focus-visible:ring-0 placeholder:text-gray-400"
+                className="pr-10 md:pr-12 border-2 md:border-[2px] border-black rounded-none h-12 md:h-[50px] font-medium text-sm md:text-base focus-visible:ring-0 placeholder:text-gray-400"
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
-              <Mail className="absolute right-4 top-1/2 -translate-y-1/2 text-black" size={20} />
+              <Mail className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 text-black" size={18} />
             </div>
 
             {/* Input Password */}
@@ -79,15 +79,15 @@ export default function LoginPage() {
               <Input
                 type="password"
                 placeholder="Password"
-                className="pr-12 border-[2px] border-black rounded-none h-[50px] font-medium focus-visible:ring-0 placeholder:text-gray-400"
+                className="pr-10 md:pr-12 border-2 md:border-[2px] border-black rounded-none h-12 md:h-[50px] font-medium text-sm md:text-base focus-visible:ring-0 placeholder:text-gray-400"
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-              <Lock className="absolute right-4 top-1/2 -translate-y-1/2 text-black" size={20} />
+              <Lock className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 text-black" size={18} />
             </div>
 
             {/* Link Sign Up - Kecil & Italic */}
-            <div className="text-[10px] text-gray-500 italic">
+            <div className="text-[10px] md:text-xs text-gray-500 italic">
               Don't have an account?{" "}
               <Link href="/sign_up" className="font-bold text-black underline not-italic">
                 Sign Up
@@ -98,7 +98,7 @@ export default function LoginPage() {
             <div className="flex justify-center pt-4">
               <Button 
                 type="submit" 
-                className="px-12 py-2 bg-white text-black border-[2.5px] border-black hover:bg-gray-100 font-[900] rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-y-1 active:shadow-none"
+                className="px-8 md:px-12 py-2 bg-white text-black border-2 md:border-[2.5px] border-black hover:bg-gray-100 font-[900] rounded-full shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-y-1 active:shadow-none text-sm md:text-base"
               >
                 LOGIN
               </Button>
