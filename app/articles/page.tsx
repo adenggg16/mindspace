@@ -68,23 +68,21 @@ const articles: Article[] = [
 
 export default function ArticlesPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-blue-100">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-200 to-blue-50">
       <DashboardNavbar />
 
       <main className="flex-1 px-6 py-12 md:px-8 max-w-7xl mx-auto w-full">
-        <div className="bg-white rounded-3xl p-8 md:p-12 shadow-lg">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-            {articles.map((article) => (
-              <ArticleCard key={article.id} article={article} />
-            ))}
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {articles.map((article) => (
+            <ArticleCard key={article.id} article={article} />
+          ))}
+        </div>
 
-          <div className="text-center text-gray-600 text-sm border-t pt-8">
-            <p>
-              This article is intended for educational purposes only and does not replace professional psychological
-              diagnosis or treatment.
-            </p>
-          </div>
+        <div className="text-center text-gray-600 text-sm mt-12 bg-white/70 backdrop-blur-sm py-6 rounded-2xl">
+          <p>
+            This article is intended for educational purposes only and does not replace professional psychological
+            diagnosis or treatment.
+          </p>
         </div>
       </main>
     </div>
@@ -97,32 +95,29 @@ interface ArticleCardProps {
 
 function ArticleCard({ article }: ArticleCardProps) {
   return (
-    <div className="bg-blue-50 rounded-3xl p-8 shadow-sm flex flex-row gap-6 items-start">
-      {/* Icon di kiri atas */}
-      <div className="flex-shrink-0">
+    <div className="bg-white rounded-3xl p-8 shadow-md flex flex-col items-start">
+      {/* Title dengan border bottom tipis */}
+      <h3 className="text-lg font-semibold text-gray-900 mb-4 pb-3 border-b border-gray-200">
+        {article.title}
+      </h3>
+
+      {/* Icon dan description di tengah */}
+      <div className="flex flex-col items-center text-center mb-8 flex-1">
         <img 
           src={`/images/${article.icon}`} 
           alt={article.title} 
-          className="w-16 h-16 md:w-20 md:h-20 object-contain" 
+          className="w-24 h-24 md:w-32 md:h-32 object-contain mb-6" 
         />
-      </div>
-
-      {/* Konten teks di kanan */}
-      <div className="flex flex-col flex-grow">
-        <h3 className="text-xl font-bold text-gray-900 mb-3">
-          {article.title}
-        </h3>
-
-        <p className="text-gray-700 text-sm mb-8">
+        <p className="text-gray-700 text-base leading-relaxed">
           {article.description}
         </p>
-
-        {/* Button panjang dengan arrow besar di kanan */}
-        <button className="bg-gray-900 text-white font-bold text-base py-3 px-8 rounded-full hover:bg-gray-800 transition-colors self-start flex items-center gap-3 min-w-48 justify-center">
-          Read Article
-          <span className="text-2xl font-bold leading-none">&gt;</span>
-        </button>
       </div>
+
+      {/* Button di bawah */}
+      <button className="bg-gray-900 text-white font-semibold text-base py-3 px-10 rounded-full hover:bg-gray-800 transition-colors flex items-center gap-3 mx-auto">
+        Read Article
+        <span className="text-2xl font-bold leading-none">&gt;</span>
+      </button>
     </div>
   )
 }
