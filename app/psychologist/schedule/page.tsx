@@ -10,75 +10,69 @@ export default function PsychologistSchedule() {
   const appointments = [
     {
       id: "1",
-      clientName: "Bella Sutrisno",
+      clientName: "Khalisa Azzahra",
       date: "2026-01-09",
       time: "10:00",
       endTime: "11:00",
       duration: 60,
-      type: "online",
       status: "confirmed",
       notes: "Anxiety management follow-up",
-      clientImage: "BS"
+      clientImage: "KA"
     },
     {
       id: "2",
-      clientName: "Rendra Putra",
+      clientName: "Salsabila Adelia Putrie",
       date: "2026-01-09",
       time: "11:30",
       endTime: "12:20",
       duration: 50,
-      type: "offline",
       status: "confirmed",
       notes: "Stress management session",
-      clientImage: "RP"
+      clientImage: "SAP"
     },
     {
       id: "3",
-      clientName: "Ameera Zahra",
+      clientName: "Ayu Agustyna Hoky",
       date: "2026-01-10",
       time: "14:00",
       endTime: "15:00",
       duration: 60,
-      type: "online",
       status: "pending",
       notes: "Depression support session",
-      clientImage: "AZ"
+      clientImage: "AA"
     },
     {
       id: "4",
-      clientName: "Ahmad Hidayat",
+      clientName: "Muhammad",
       date: "2026-01-11",
       time: "09:00",
       endTime: "09:45",
       duration: 45,
-      type: "offline",
       status: "confirmed",
       notes: "Relationship issues consultation",
-      clientImage: "AH"
+      clientImage: "MU"
     },
     {
       id: "5",
-      clientName: "Siti Nurhaliza",
+      clientName: "Reyhan Zayyan",
       date: "2026-01-13",
       time: "16:00",
       endTime: "17:00",
       duration: 60,
-      type: "online",
       status: "completed",
       notes: "Final session - self-esteem closure",
-      clientImage: "SN"
+      clientImage: "RZ"
     },
     {
       id: "6",
-      clientName: "Bella Sutrisno",
+      clientName: "Khalisa Azzahra",
       date: "2026-01-16",
       time: "10:00",
       endTime: "11:00",
       duration: 60,
-      type: "online",
       status: "confirmed",
       notes: "Follow-up session",
-      clientImage: "BS"
+      clientImage: "KA"
     }
   ]
 
@@ -159,7 +153,7 @@ export default function PsychologistSchedule() {
           <div className="lg:col-span-1 bg-white rounded-xl shadow-lg p-6">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg font-bold text-gray-900">
-                {currentDate.toLocaleString("default", { month: "long", year: "numeric" })}
+                {currentDate.toLocaleString("en-US", { month: "long", year: "numeric" })}
               </h3>
               <div className="flex gap-2">
                 <button
@@ -225,7 +219,7 @@ export default function PsychologistSchedule() {
           {/* Schedule List */}
           <div className="lg:col-span-2 bg-white rounded-xl shadow-lg p-6">
             <h3 className="text-lg font-bold text-gray-900 mb-6">
-              {currentDate.toLocaleDateString("default", { weekday: "long", month: "long", day: "numeric" })}
+              {currentDate.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
             </h3>
 
             {todayAppointments.length > 0 ? (
@@ -263,7 +257,7 @@ export default function PsychologistSchedule() {
                           </span>
                         </div>
                         <div className="flex items-center gap-2 text-gray-700">
-                          {appointment.type === "online" ? (
+                          (
                             <>
                               <Video size={16} className="text-blue-600 flex-shrink-0" />
                               <span>Video Call</span>
@@ -273,7 +267,7 @@ export default function PsychologistSchedule() {
                               <MapPin size={16} className="text-orange-600 flex-shrink-0" />
                               <span>In-Person</span>
                             </>
-                          )}
+                          )
                         </div>
                         <div className="flex items-center gap-2 text-gray-700">
                           <span className="font-semibold">{appointment.duration} min</span>
@@ -281,11 +275,11 @@ export default function PsychologistSchedule() {
                       </div>
 
                       <div className="mt-4 flex gap-3">
-                        {appointment.type === "online" && (
+                        (
                           <button className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm">
                             Join Video Call
                           </button>
-                        )}
+                        )
                         <button className="flex-1 px-4 py-2 bg-gray-200 text-gray-900 rounded-lg hover:bg-gray-300 transition font-medium text-sm">
                           View Details
                         </button>

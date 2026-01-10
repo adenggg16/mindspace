@@ -7,9 +7,9 @@ import { useState } from "react"
 export default function PsychologistProfile() {
   const [isEditing, setIsEditing] = useState(false)
   const [profileData, setProfileData] = useState({
-    name: "Dr. Sarah Anderson",
+    name: "Dr. Miftahul Jannah, M.Psi.",
     title: "Clinical Psychologist",
-    email: "sarah.anderson@mindspace.com",
+    email: "miftahul.jannah@mindspace.com",
     phone: "+62 812-3456-7890",
     location: "Jakarta, Indonesia",
     bio: "Licensed clinical psychologist with 8+ years of experience in anxiety, depression, and stress management therapy.",
@@ -21,7 +21,7 @@ export default function PsychologistProfile() {
       "Certified Cognitive Behavioral Therapy Specialist"
     ],
     availability: "Monday - Friday, 9:00 AM - 5:00 PM",
-    sessionFee: "$60 per session"
+    sessionFee: "Rp 350.000 per session"
   })
 
   const handleInputChange = (field: string, value: string) => {

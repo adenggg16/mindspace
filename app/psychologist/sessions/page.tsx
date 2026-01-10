@@ -12,7 +12,7 @@ export default function PsychologistSessions() {
   const sessions = [
     {
       id: "1",
-      clientName: "Bella Sutrisno",
+      clientName: "Khalisa Azzahra",
       date: "2026-01-09",
       time: "10:00-11:00",
       type: "online",
@@ -23,7 +23,7 @@ export default function PsychologistSessions() {
     },
     {
       id: "2",
-      clientName: "Rendra Putra",
+      clientName: "Salsabila Adelia Putrie",
       date: "2026-01-08",
       time: "11:30-12:20",
       type: "offline",
@@ -34,7 +34,7 @@ export default function PsychologistSessions() {
     },
     {
       id: "3",
-      clientName: "Ameera Zahra",
+      clientName: "Ayu Agustyna Hoky",
       date: "2026-01-07",
       time: "14:00-15:00",
       type: "online",
@@ -45,7 +45,7 @@ export default function PsychologistSessions() {
     },
     {
       id: "4",
-      clientName: "Ahmad Hidayat",
+      clientName: "Muhammad",
       date: "2026-01-06",
       time: "09:00-09:45",
       type: "offline",
@@ -56,7 +56,7 @@ export default function PsychologistSessions() {
     },
     {
       id: "5",
-      clientName: "Siti Nurhaliza",
+      clientName: "Reyhan Zayyan",
       date: "2025-12-20",
       time: "16:00-17:00",
       type: "online",
@@ -120,7 +120,7 @@ export default function PsychologistSessions() {
                 >
                   <p className="font-semibold text-gray-900 text-sm">{session.clientName}</p>
                   <p className="text-xs text-gray-500 mt-1">
-                    {new Date(session.date).toLocaleDateString("default", {
+                    {new Date(session.date).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
                       year: "numeric"
@@ -144,7 +144,7 @@ export default function PsychologistSessions() {
                   <div>
                     <p className="text-sm text-gray-600 mb-1">Date</p>
                     <p className="font-semibold text-gray-900">
-                      {new Date(currentSession.date).toLocaleDateString("default", {
+                      {new Date(currentSession.date).toLocaleDateString("en-US", {
                         month: "long",
                         day: "numeric",
                         year: "numeric"

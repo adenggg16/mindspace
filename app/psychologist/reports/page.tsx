@@ -45,7 +45,7 @@ export default function PsychologistReports() {
 
   const clientProgress = [
     {
-      name: "Bella Sutrisno",
+      name: "Khalisa Azzahra",
       issue: "Anxiety",
       startDate: "2025-08-15",
       progress: 65,
@@ -54,7 +54,7 @@ export default function PsychologistReports() {
       trend: "improving"
     },
     {
-      name: "Rendra Putra",
+      name: "Salsabila Adelia Putrie",
       issue: "Stress Management",
       startDate: "2025-10-20",
       progress: 45,
@@ -63,7 +63,7 @@ export default function PsychologistReports() {
       trend: "stable"
     },
     {
-      name: "Ameera Zahra",
+      name: "Ayu Agustyna Hoky",
       issue: "Depression",
       startDate: "2025-06-10",
       progress: 78,
@@ -72,7 +72,7 @@ export default function PsychologistReports() {
       trend: "improving"
     },
     {
-      name: "Ahmad Hidayat",
+      name: "Reyhan Zayyan",
       issue: "Relationship Issues",
       startDate: "2025-09-05",
       progress: 40,

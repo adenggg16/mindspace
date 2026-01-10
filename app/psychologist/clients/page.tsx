@@ -11,8 +11,8 @@ export default function PsychologistClients() {
   const clients = [
     {
       id: "1",
-      name: "Bella Sutrisno",
-      email: "bella.sutrisno@student.edu",
+      name: "Khalisa Azzahra",
+      email: "khalisa.azzahra@student.edu",
       phone: "+62 812-3456-7890",
       lastSession: "2026-01-09",
       nextSession: "2026-01-16",
@@ -24,8 +24,8 @@ export default function PsychologistClients() {
     },
     {
       id: "2",
-      name: "Rendra Putra",
-      email: "rendra.putra@student.edu",
+      name: "Salsabila Adelia Putrie",
+      email: "salsabila.adelia.putrie@student.edu",
       phone: "+62 812-9876-5432",
       lastSession: "2026-01-08",
       nextSession: "2026-01-15",
@@ -37,8 +37,8 @@ export default function PsychologistClients() {
     },
     {
       id: "3",
-      name: "Ameera Zahra",
-      email: "ameera.zahra@student.edu",
+      name: "Ayu Agustyna Hoky",
+      email: "ayu.agustyna.hoky@student.edu",
       phone: "+62 812-5555-6666",
       lastSession: "2026-01-07",
       nextSession: "2026-01-14",
@@ -50,8 +50,8 @@ export default function PsychologistClients() {
     },
     {
       id: "4",
-      name: "Ahmad Hidayat",
-      email: "ahmad.hidayat@student.edu",
+      name: "Muhammad",
+      email: "muhammad@student.edu",
       phone: "+62 812-7777-8888",
       lastSession: "2026-01-06",
       nextSession: null,
@@ -63,8 +63,8 @@ export default function PsychologistClients() {
     },
     {
       id: "5",
-      name: "Siti Nurhaliza",
-      email: "siti.nurhaliza@student.edu",
+      name: "Reyhan Zayyan",
+      email: "reyhan.zayyan@student.edu",
       phone: "+62 812-1111-2222",
       lastSession: "2025-12-20",
       nextSession: null,
@@ -223,15 +223,7 @@ export default function PsychologistClients() {
                     <MessageSquare size={16} />
                     <span className="hidden sm:inline">Message</span>
                   </button>
-                  {client.nextSession && (
-                    <button
-                      title="Schedule"
-                      className="flex-1 p-2 bg-green-100 text-green-600 hover:bg-green-200 rounded-lg transition flex items-center justify-center gap-2 font-medium text-sm"
-                    >
-                      <Calendar size={16} />
-                      <span className="hidden sm:inline">Book</span>
-                    </button>
-                  )}
+                  
                 </div>
               </div>
             </div>

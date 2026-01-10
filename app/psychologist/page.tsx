@@ -16,7 +16,7 @@ export default function PsychologistDashboard() {
         <div className="bg-gradient-to-r from-[#1a2e4a] to-[#2d4a6f] rounded-xl md:rounded-2xl p-8 md:p-12 shadow-xl mb-8 text-white">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between">
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold mb-2">Welcome back, Dr. Sarah! 👋</h1>
+              <h1 className="text-3xl md:text-4xl font-bold mb-2">Welcome back, Dr. Miftah! 👋</h1>
               <p className="text-gray-200 md:text-lg">
                 You have <span className="font-bold">8 sessions</span> scheduled this week
               </p>

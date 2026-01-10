@@ -103,7 +103,7 @@ export default function ScheduleSection() {
       <div className="lg:col-span-1 bg-white rounded-xl shadow-lg p-6">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-bold text-gray-900">
-            {currentDate.toLocaleString("default", { month: "long", year: "numeric" })}
+            {currentDate.toLocaleString("en-US", { month: "long", year: "numeric" })}
           </h3>
           <div className="flex gap-2">
             <button
@@ -166,7 +166,7 @@ export default function ScheduleSection() {
       {/* Today's Schedule */}
       <div className="lg:col-span-2 bg-white rounded-xl shadow-lg p-6">
         <h3 className="text-lg font-bold text-gray-900 mb-6">
-          {currentDate.toLocaleDateString("default", { weekday: "long", month: "long", day: "numeric" })}
+          {currentDate.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
         </h3>
 
         {todayAppointments.length > 0 ? (

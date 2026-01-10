@@ -15,7 +15,7 @@ export default function RecentActivitySection() {
   const activities: SessionNote[] = [
     {
       id: "1",
-      clientName: "Bella Sutrisno",
+      clientName: "Khalisa Azzahra",
       date: "Today, 10:00 AM",
       type: "Online Session",
       notes: "Discussed anxiety triggers and coping mechanisms",
@@ -23,7 +23,7 @@ export default function RecentActivitySection() {
     },
     {
       id: "2",
-      clientName: "Rendra Putra",
+      clientName: "Salsabila Adelia Putrie",
       date: "Yesterday",
       type: "In-Person Session",
       notes: "Stress management exercises - good progress",
@@ -31,7 +31,7 @@ export default function RecentActivitySection() {
     },
     {
       id: "3",
-      clientName: "Ameera Zahra",
+      clientName: "Ayu Agustyna Hoky",
       date: "Jan 7, 2026",
       type: "Online Session",
       notes: "Follow-up appointment scheduled",
@@ -39,7 +39,7 @@ export default function RecentActivitySection() {
     },
     {
       id: "4",
-      clientName: "Ahmad Hidayat",
+      clientName: "Muhammad",
       date: "Jan 6, 2026",
       type: "In-Person Session",
       notes: "Session paused per client request",
@@ -63,7 +63,7 @@ export default function RecentActivitySection() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       {/* Recent Sessions */}
-      <div className="bg-white rounded-xl shadow-lg p-6">
+      <div className="bg-white rounded-xl shadow-lg p-6 lg:col-span-2">
         <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
           <Activity size={24} className="text-[#e17b9e]" />
           Recent Sessions
@@ -96,63 +96,7 @@ export default function RecentActivitySection() {
         </button>
       </div>
 
-      {/* Quick Stats */}
-      <div className="bg-white rounded-xl shadow-lg p-6">
-        <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
-          <TrendingUp size={24} className="text-[#e17b9e]" />
-          Performance Insights
-        </h3>
 
-        <div className="space-y-6">
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <p className="font-medium text-gray-700 text-sm">Average Session Duration</p>
-              <p className="font-bold text-2xl text-gray-900">58 min</p>
-            </div>
-            <p className="text-xs text-gray-500">↑ 5 min from last month</p>
-          </div>
-
-          <div className="h-px bg-gray-200"></div>
-
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <p className="font-medium text-gray-700 text-sm">Client Satisfaction</p>
-              <p className="font-bold text-2xl text-gray-900">4.8/5</p>
-            </div>
-            <div className="flex gap-1">
-              {[...Array(5)].map((_, i) => (
-                <span key={i} className={`text-lg ${i < 4 ? "text-yellow-400" : "text-gray-300"}`}>
-                  ★
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="h-px bg-gray-200"></div>
-
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <p className="font-medium text-gray-700 text-sm">Completion Rate</p>
-              <p className="font-bold text-2xl text-gray-900">94%</p>
-            </div>
-            <p className="text-xs text-gray-500">12 out of 13 appointments completed</p>
-          </div>
-
-          <div className="h-px bg-gray-200"></div>
-
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <p className="font-medium text-gray-700 text-sm">New Requests</p>
-              <p className="font-bold text-2xl text-gray-900">3</p>
-            </div>
-            <p className="text-xs text-gray-500">Waiting for approval</p>
-          </div>
-        </div>
-
-        <button className="w-full mt-6 py-2 bg-gradient-to-r from-[#e17b9e] to-[#d85a8a] text-white font-semibold rounded-lg hover:shadow-lg transition">
-          View Detailed Report
-        </button>
-      </div>
     </div>
   )
 }

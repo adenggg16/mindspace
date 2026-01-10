@@ -54,13 +54,13 @@ export default function StatisticsSection() {
               {stat.icon}
             </div>
             {stat.trend && (
-              <span className={`text-sm font-bold ${stat.trend > 0 ? "text-green-200" : "text-red-200"}`}>
+              <span className={`text-sm font-bold ${stat.trend > 0 ? "text-blue-500" : "text-red-200"}`}>
                 {stat.trend > 0 ? "+" : ""}{stat.trend}%
               </span>
             )}
           </div>
-          <h3 className="text-gray-100 text-sm font-medium mb-1">{stat.title}</h3>
-          <p className="text-3xl font-bold">{stat.value}</p>
+          <h3 className="text-black text-sm font-medium mb-1">{stat.title}</h3>
+          <p className="text-3xl font-bold text-pink-500">{stat.value}</p>
         </div>
       ))}
     </div>

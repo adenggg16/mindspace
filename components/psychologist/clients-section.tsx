@@ -22,8 +22,8 @@ export default function ClientsSection() {
   const clients: Client[] = [
     {
       id: "1",
-      name: "Bella Sutrisno",
-      email: "bella.sutrisno@student.edu",
+      name: "Khalisa Azzahra",
+      email: "khalisa.azzahra@student.edu",
       phone: "+62 812-3456-7890",
       lastSession: "2026-01-09",
       nextSession: "2026-01-16",
@@ -33,8 +33,8 @@ export default function ClientsSection() {
     },
     {
       id: "2",
-      name: "Rendra Putra",
-      email: "rendra.putra@student.edu",
+      name: "Salsabila Adelia Putrie",
+      email: "salsabila.putrie@student.edu",
       phone: "+62 812-9876-5432",
       lastSession: "2026-01-08",
       nextSession: "2026-01-15",
@@ -44,8 +44,8 @@ export default function ClientsSection() {
     },
     {
       id: "3",
-      name: "Ameera Zahra",
-      email: "ameera.zahra@student.edu",
+      name: "Ayu Agustyna Hoky",
+      email: "ayu.agustyna@student.edu",
       phone: "+62 812-5555-6666",
       lastSession: "2026-01-07",
       nextSession: "2026-01-14",
@@ -55,8 +55,8 @@ export default function ClientsSection() {
     },
     {
       id: "4",
-      name: "Ahmad Hidayat",
-      email: "ahmad.hidayat@student.edu",
+      name: "Muhammad",
+      email: "muhammad@student.edu",
       phone: "+62 812-7777-8888",
       lastSession: "2026-01-06",
       nextSession: null,
@@ -66,8 +66,8 @@ export default function ClientsSection() {
     },
     {
       id: "5",
-      name: "Siti Nurhaliza",
-      email: "siti.nurhaliza@student.edu",
+      name: "Reyhan Zayyan",
+      email: "reyhan.zayyan@student.edu",
       phone: "+62 812-1111-2222",
       lastSession: "2025-12-20",
       nextSession: null,
@@ -172,7 +172,7 @@ export default function ClientsSection() {
                   </span>
                 </td>
                 <td className="py-4 px-4 hidden md:table-cell text-sm text-gray-600">
-                  {new Date(client.lastSession).toLocaleDateString("default", { month: "short", day: "numeric" })}
+                  {new Date(client.lastSession).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                 </td>
                 <td className="py-4 px-4">
                   <div className="w-full bg-gray-200 rounded-full h-2">
@@ -200,12 +200,7 @@ export default function ClientsSection() {
                     >
                       <MessageSquare size={16} />
                     </button>
-                    <button
-                      title="Call"
-                      className="p-2 hover:bg-green-100 rounded-lg transition text-green-600"
-                    >
-                      <Phone size={16} />
-                    </button>
+                    
                     {client.nextSession && (
                       <button
                         title="Schedule"
