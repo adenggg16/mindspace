@@ -2,15 +2,8 @@
 
 import Link from "next/link"
 
-interface Activity {
-  id: number
-  icon: string
-  title: string
-  href: string
-}
-
 export function ActivitiesSection() {
-  const activities: Activity[] = [
+  const activities = [
     {
       id: 1,
       icon: "📋",
@@ -32,46 +25,29 @@ export function ActivitiesSection() {
   ]
 
   return (
-    <section>
-      <h2 className="mb-6 text-2xl font-bold text-gray-900">
-        Recent Activities
-      </h2>
-
-      <div className="overflow-hidden rounded-2xl border border-pink-200 bg-[#f3e6eb]">
-        {activities.map((activity, index) => (
-          <ActivityItem
-            key={activity.id}
-            activity={activity}
-            isLast={index === activities.length - 1}
-          />
+    <div>
+      <h2 className="text-2xl font-bold text-gray-900 mb-8">Recent Activities</h2>
+      <div className="space-y-4">
+        {activities.map((activity) => (
+          <ActivityItem key={activity.id} icon={activity.icon} title={activity.title} href={activity.href} />
         ))}
       </div>
-    </section>
+    </div>
   )
 }
 
 interface ActivityItemProps {
-  activity: Activity
-  isLast: boolean
+  icon: string
+  title: string
+  href: string
 }
 
-function ActivityItem({ activity, isLast }: ActivityItemProps) {
-  const { icon, title, href } = activity
-
+function ActivityItem({ icon, title, href }: ActivityItemProps) {
   return (
-    <Link href={href} className="block">
-      <div
-        className={`flex items-center gap-4 px-6 py-4 transition-all duration-200 hover:bg-[#ecd6de] ${
-          !isLast ? "border-b border-pink-300" : ""
-        }`}
-      >
-        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-400 text-lg">
-          {icon}
-        </div>
-
-        <p className="text-sm font-medium text-gray-900">
-          {title}
-        </p>
+    <Link href={href}>
+      <div className="bg-[#e8c9d5] rounded-2xl p-6 flex items-center gap-4 hover:bg-[#ddb5c4] transition cursor-pointer">
+        <span className="text-2xl flex-shrink-0">{icon}</span>
+        <p className="text-gray-900 font-semibold">{title}</p>
       </div>
     </Link>
   )
