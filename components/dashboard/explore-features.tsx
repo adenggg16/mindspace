@@ -15,7 +15,7 @@ export default function ExploreFeatures() {
       title: "Get to Know You",
       description: `This brief form helps us get to know you better, so our psychologists can provide more personalized and supportive conversations.`,
       icon: "/images/get.png",
-      href: "/profile",
+      href: "/get-to-know-you",
     },
     {
       id: "mental-health-articles",
