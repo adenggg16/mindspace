@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
 export default function SuccessPage() {
@@ -58,17 +59,20 @@ export default function SuccessPage() {
 
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button
-                onClick={() => window.location.href = "/dashboard"}
-                className="bg-[#0A2A5E] hover:bg-[#081F47] text-white px-8 py-2 rounded-full font-semibold"
-              >
-                Back to Dashboard
-              </Button>
-              <Button
-                className="bg-[#0A2A5E] hover:bg-[#081F47] text-white px-8 py-2 rounded-full font-semibold"
-              >
-                Consultation Now →
-              </Button>
+              <Link href="/dashboard">
+                <Button
+                  className="bg-[#0A2A5E] hover:bg-[#081F47] text-white px-8 py-2 rounded-full font-semibold"
+                >
+                  Back to Dashboard
+                </Button>
+              </Link>
+              <Link href="/counseling">
+                <Button
+                  className="bg-[#0A2A5E] hover:bg-[#081F47] text-white px-8 py-2 rounded-full font-semibold"
+                >
+                  Consultation Now →
+                </Button>
+              </Link>
             </div>
 
             {/* Decorative Stars */}
