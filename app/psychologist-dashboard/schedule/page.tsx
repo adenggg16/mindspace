@@ -24,8 +24,8 @@ export default function PsychologistSchedule() {
       clientName: "Salsabila Adelia Putrie",
       date: "2026-01-09",
       time: "11:30",
-      endTime: "12:20",
-      duration: 50,
+      endTime: "12:30",
+      duration: 60,
       status: "confirmed",
       notes: "Stress management session",
       clientImage: "SAP"
@@ -46,8 +46,8 @@ export default function PsychologistSchedule() {
       clientName: "Muhammad",
       date: "2026-01-11",
       time: "09:00",
-      endTime: "09:45",
-      duration: 45,
+      endTime: "10:00",
+      duration: 60,
       status: "confirmed",
       notes: "Relationship issues consultation",
       clientImage: "MU"
@@ -257,17 +257,7 @@ export default function PsychologistSchedule() {
                           </span>
                         </div>
                         <div className="flex items-center gap-2 text-gray-700">
-                          (
-                            <>
-                              <Video size={16} className="text-blue-600 flex-shrink-0" />
-                              <span>Video Call</span>
-                            </>
-                          ) : (
-                            <>
-                              <MapPin size={16} className="text-orange-600 flex-shrink-0" />
-                              <span>In-Person</span>
-                            </>
-                          )
+
                         </div>
                         <div className="flex items-center gap-2 text-gray-700">
                           <span className="font-semibold">{appointment.duration} min</span>
@@ -275,11 +265,11 @@ export default function PsychologistSchedule() {
                       </div>
 
                       <div className="mt-4 flex gap-3">
-                        (
+                        
                           <button className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm">
-                            Join Video Call
+                            Join Session
                           </button>
-                        )
+                        
                         <button className="flex-1 px-4 py-2 bg-gray-200 text-gray-900 rounded-lg hover:bg-gray-300 transition font-medium text-sm">
                           View Details
                         </button>

@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import PsychologistNavbar from "@/components/psychologist/navbar"
 import StatisticsSection from "@/components/psychologist/statistics-section"
 import ScheduleSection from "@/components/psychologist/schedule-section"
@@ -22,12 +23,10 @@ export default function PsychologistDashboard() {
               </p>
             </div>
             <div className="mt-6 md:mt-0 flex gap-4">
-              <button className="px-6 py-3 bg-white text-[#1a2e4a] font-semibold rounded-lg hover:shadow-lg transition">
-                New Client
-              </button>
-              <button className="px-6 py-3 bg-[#e17b9e] hover:bg-[#d85a8a] font-semibold rounded-lg transition">
+              
+              <Link href="/psychologist/schedule" className="px-6 py-3 bg-[#e17b9e] hover:bg-[#d85a8a] font-semibold rounded-lg transition">
                 Schedule Now
-              </button>
+              </Link>
             </div>
           </div>
         </div>

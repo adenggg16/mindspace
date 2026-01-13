@@ -54,7 +54,7 @@ export default function StatisticsSection() {
               {stat.icon}
             </div>
             {stat.trend && (
-              <span className={`text-sm font-bold ${stat.trend > 0 ? "text-blue-500" : "text-red-200"}`}>
+              <span className={`text-sm font-bold ${stat.trend > 0 ? "text-blue-500" : "text-red-500"}`}>
                 {stat.trend > 0 ? "+" : ""}{stat.trend}%
               </span>
             )}

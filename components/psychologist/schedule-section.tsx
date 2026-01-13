@@ -9,7 +9,6 @@ interface Appointment {
   date: string
   time: string
   duration: number
-  type: "online" | "offline"
   status: "confirmed" | "pending" | "completed"
 }
 
@@ -19,47 +18,42 @@ export default function ScheduleSection() {
   const appointments: Appointment[] = [
     {
       id: "1",
-      clientName: "Bella Sutrisno",
+      clientName: "Khalisa Azzahra",
       date: "2026-01-09",
       time: "10:00",
       duration: 60,
-      type: "online",
       status: "confirmed"
     },
     {
       id: "2",
-      clientName: "Rendra Putra",
+      clientName: "Salsabila Adelia Putrie",
       date: "2026-01-09",
       time: "11:30",
       duration: 50,
-      type: "offline",
       status: "confirmed"
     },
     {
       id: "3",
-      clientName: "Ameera Zahra",
+      clientName: "Ayu Agustyna Hoky",
       date: "2026-01-10",
       time: "14:00",
       duration: 60,
-      type: "online",
       status: "pending"
     },
     {
       id: "4",
-      clientName: "Ahmad Hidayat",
+      clientName: "Muhammad",
       date: "2026-01-11",
       time: "09:00",
       duration: 45,
-      type: "offline",
       status: "confirmed"
     },
     {
       id: "5",
-      clientName: "Siti Nurhaliza",
+      clientName: "Reyhan Zayyan",
       date: "2026-01-13",
       time: "16:00",
       duration: 60,
-      type: "online",
       status: "completed"
     }
   ]
@@ -195,12 +189,8 @@ export default function ScheduleSection() {
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <div className={`flex items-center gap-2 text-sm font-medium ${getTypeColor(appointment.type)}`}>
-                    <MapPin size={16} />
-                    <span>{appointment.type === "online" ? "Video Call" : "In-Person"}</span>
-                  </div>
-                  <button className="text-sm px-3 py-1 rounded-lg hover:bg-gray-200 transition text-gray-700 font-medium">
+                <div className="flex justify-center">
+                  <button className="text-sm px-4 py-1.5 rounded-full border border-gray-300 hover:bg-gray-200 transition text-gray-700 font-medium">
                     Details
                   </button>
                 </div>

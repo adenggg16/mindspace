@@ -216,13 +216,7 @@ export default function PsychologistClients() {
                     <Eye size={16} />
                     <span className="hidden sm:inline">View</span>
                   </button>
-                  <button
-                    title="Message"
-                    className="flex-1 p-2 bg-purple-100 text-purple-600 hover:bg-purple-200 rounded-lg transition flex items-center justify-center gap-2 font-medium text-sm"
-                  >
-                    <MessageSquare size={16} />
-                    <span className="hidden sm:inline">Message</span>
-                  </button>
+                  
                   
                 </div>
               </div>
