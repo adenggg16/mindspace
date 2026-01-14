@@ -5,11 +5,13 @@ import DashboardNavbar from "@/components/dashboard/navbar"
 import MoodSelector from "@/components/dashboard/mood-selector"
 import ReflectionSection from "@/components/dashboard/reflection-section"
 import ExploreFeatures from "@/components/dashboard/explore-features"
+import GetToKnowYouModal from "@/components/GetToKnowYouModal"
 
 
 export default function DashboardHome() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null)
   const [reflection, setReflection] = useState("")
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const handleSubmitMood = () => {
     if (selectedMood && reflection) {
@@ -42,8 +44,9 @@ export default function DashboardHome() {
         />
 
         {/* Explore Features Section */}
-        <ExploreFeatures />
+        <ExploreFeatures onOpenModal={() => setIsModalOpen(true)} />
       </main>
+      <GetToKnowYouModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   )
 }

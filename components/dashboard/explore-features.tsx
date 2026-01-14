@@ -1,7 +1,11 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
-export default function ExploreFeatures() {
+interface ExploreFeaturesProps {
+  onOpenModal: () => void
+}
+
+export default function ExploreFeatures({ onOpenModal }: ExploreFeaturesProps) {
   const features = [
     {
       id: "talk-to-us",
@@ -42,11 +46,20 @@ export default function ExploreFeatures() {
             </div>
             <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-3 md:mb-4">{feature.title}</h3>
             <p className="text-gray-700 leading-relaxed mb-4 md:mb-6 text-xs md:text-sm">{feature.description}</p>
-            <Link href={feature.href}>
-              <Button className="bg-[#1a2e4a] hover:bg-[#0f1f31] text-white px-4 md:px-6 py-2 rounded-full text-sm md:text-base">
+            {feature.id === "get-to-know-you" ? (
+              <Button
+                onClick={onOpenModal}
+                className="bg-[#1a2e4a] hover:bg-[#0f1f31] text-white px-4 md:px-6 py-2 rounded-full text-sm md:text-base"
+              >
                 {feature.title}
               </Button>
-            </Link>
+            ) : (
+              <Link href={feature.href}>
+                <Button className="bg-[#1a2e4a] hover:bg-[#0f1f31] text-white px-4 md:px-6 py-2 rounded-full text-sm md:text-base">
+                  {feature.title}
+                </Button>
+              </Link>
+            )}
           </div>
         ))}
       </div>
