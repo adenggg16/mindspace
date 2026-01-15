@@ -205,15 +205,11 @@ export default function PaymentPage() {
               Change Schedule
             </Button>
           </Link>
-          <Button
-            onClick={() => {
-              alert('Payment feature is under development. Your booking has been confirmed!')
-              window.location.href = '/dashboard'
-            }}
-            className="flex-1 bg-[#1a2e4a] hover:bg-[#0f1f31] text-white"
-          >
-            Complete Payment
-          </Button>
+          <Link href={`/payment-method?psychologist=${psychologistId}&date=${date}&time=${time}&fee=${fee}`} className="flex-1">
+            <Button className="w-full bg-[#1a2e4a] hover:bg-[#0f1f31] text-white">
+              Complete Payment
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
