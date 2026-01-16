@@ -36,7 +36,7 @@ export default function LoginPage() {
 
         // 3. Logika Redirect: Cek role dan arahkan ke dashboard yang tepat
         if (role === "Psikolog") {
-          router.push("/psychologist-dashboard")
+          router.push("/psychologist")
         } else {
           router.push("/dashboard")
         }
