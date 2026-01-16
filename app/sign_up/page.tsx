@@ -17,6 +17,7 @@ export default function SignUpPage() {
   const [confirmPassword, setConfirmPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+  const [role, setRole] = useState("Student")
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -35,13 +36,13 @@ export default function SignUpPage() {
       // 2. Simpan Data Profil ke Firestore (Database)
       // Kita simpan Nama default dan Tag spesialisasi sesuai desain Figma kamu
       await setDoc(doc(db, "users", user.uid), {
-        fullName: "User Baru MindSpace", // Nanti bisa diedit di profil
-        email: email,
-        phoneNumber: phone,
-        role: "Psikolog", // Sesuai desain Figma
-        specialization: ["Anxiety", "Depression"], 
-        createdAt: new Date().toISOString()
-      })
+  fullName: "User Baru MindSpace",
+  email: email,
+  phoneNumber: phone,
+  role: role, // Menggunakan state role (Student/Psikolog)
+  specialization: role === "Psikolog" ? ["Anxiety", "Depression"] : [], 
+  createdAt: new Date().toISOString()
+})
 
       alert("Akun berhasil dibuat! Mengalihkan ke Login...")
       router.push("/login")
@@ -78,7 +79,32 @@ export default function SignUpPage() {
               <User size={40} className="md:w-12 md:h-12 text-[#1e293b]" />
             </div>
           </div>
-
+{/* Pilihan Role */}
+<div className="flex justify-center gap-4 py-2">
+  <label className="flex items-center gap-2 cursor-pointer group">
+    <input 
+      type="radio" 
+      name="role" 
+      value="Student"
+      checked={role === "Student"}
+      onChange={(e) => setRole(e.target.value)}
+      className="w-4 h-4 accent-black"
+    />
+    <span className={`text-xs font-bold ${role === "Student" ? "text-black" : "text-gray-400"}`}>STUDENT</span>
+  </label>
+  
+  <label className="flex items-center gap-2 cursor-pointer group">
+    <input 
+      type="radio" 
+      name="role" 
+      value="Psikolog"
+      checked={role === "Psikolog"}
+      onChange={(e) => setRole(e.target.value)}
+      className="w-4 h-4 accent-black"
+    />
+    <span className={`text-xs font-bold ${role === "Psikolog" ? "text-black" : "text-gray-400"}`}>PSIKOLOG</span>
+  </label>
+</div>
           <h2 className="text-3xl md:text-4xl font-black text-center mb-6 md:mb-8 tracking-tighter text-[#1e293b]">
             SIGN UP
           </h2>

@@ -7,7 +7,6 @@ import ReflectionSection from "@/components/dashboard/reflection-section"
 import ExploreFeatures from "@/components/dashboard/explore-features"
 import GetToKnowYouModal from "@/components/GetToKnowYouModal"
 
-
 export default function DashboardHome() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null)
   const [reflection, setReflection] = useState("")
