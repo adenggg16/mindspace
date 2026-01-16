@@ -27,7 +27,7 @@ export function ActivitiesSection() {
   return (
     <div>
       <h2 className="text-2xl font-bold text-gray-900 mb-8">Recent Activities</h2>
-      <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
         {activities.map((activity) => (
           <ActivityItem key={activity.id} icon={activity.icon} title={activity.title} href={activity.href} />
         ))}
@@ -45,9 +45,9 @@ interface ActivityItemProps {
 function ActivityItem({ icon, title, href }: ActivityItemProps) {
   return (
     <Link href={href}>
-      <div className="bg-[#e8c9d5] rounded-2xl p-6 flex items-center gap-4 hover:bg-[#ddb5c4] transition cursor-pointer">
-        <span className="text-2xl flex-shrink-0">{icon}</span>
-        <p className="text-gray-900 font-semibold">{title}</p>
+      <div className="bg-gradient-to-br from-[#e8c9d5] to-[#ddb5c4] rounded-xl md:rounded-2xl p-6 md:p-8 flex flex-col items-center justify-center gap-3 text-center h-full hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer border border-[#f0dce5]">
+        <span className="text-4xl md:text-5xl">{icon}</span>
+        <p className="text-gray-900 font-semibold text-sm md:text-base leading-snug">{title}</p>
       </div>
     </Link>
   )
