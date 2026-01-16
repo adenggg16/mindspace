@@ -13,10 +13,12 @@ interface Article {
 }
 
 export default function ManageArticles() {
+  const [mounted, setMounted] = useState(false);
+
   // Mock data
   const [articles, setArticles] = useState<Article[]>([
-    { id: '1', title: 'Artikel 1', content: 'Konten artikel 1', author: 'Admin', createdAt: new Date() },
-    { id: '2', title: 'Artikel 2', content: 'Konten artikel 2', author: 'Admin', createdAt: new Date() },
+    { id: '1', title: 'Artikel 1', content: 'Konten artikel 1', author: 'Admin', createdAt: new Date('2024-01-01') },
+    { id: '2', title: 'Artikel 2', content: 'Konten artikel 2', author: 'Admin', createdAt: new Date('2024-01-02') },
   ]);
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -26,6 +28,10 @@ export default function ManageArticles() {
     content: '',
     author: '',
   });
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // useEffect(() => {
   //   const fetchArticles = async () => {
@@ -102,6 +108,10 @@ export default function ManageArticles() {
   // if (loading) {
   //   return <div className="text-center">Loading...</div>;
   // }
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <div>

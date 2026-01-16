@@ -20,8 +20,8 @@ export default function PsychologistProfile() {
       "Licensed Professional Counselor",
       "Certified Cognitive Behavioral Therapy Specialist"
     ],
-    availability: "Monday - Friday, 9:00 AM - 5:00 PM",
-    sessionFee: "Rp 350.000 per session"
+    availability: "Monday - Friday, 9:00 AM - 19:00 PM",
+    sessionFee: "Rp 150.000 per session"
   })
 
   const handleInputChange = (field: string, value: string) => {
