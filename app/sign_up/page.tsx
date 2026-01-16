@@ -43,8 +43,8 @@ export default function SignUpPage() {
         createdAt: new Date().toISOString()
       })
 
-      alert("Akun berhasil dibuat! Mengalihkan ke Dashboard...")
-      router.push("/dashboard")
+      alert("Akun berhasil dibuat! Mengalihkan ke Login...")
+      router.push("/login")
     } catch (error: any) {
       alert("Gagal mendaftar: " + error.message)
     } finally {
