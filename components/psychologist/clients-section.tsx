@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Search, Filter, MessageSquare, Phone, Calendar } from "lucide-react"
+import { Search, Filter } from "lucide-react"
 
 interface Client {
   id: string
@@ -154,7 +154,6 @@ export default function ClientsSection() {
               <th className="text-left py-4 px-4 font-bold text-gray-700 text-sm hidden md:table-cell">Last Session</th>
               <th className="text-left py-4 px-4 font-bold text-gray-700 text-sm">Progress</th>
               <th className="text-left py-4 px-4 font-bold text-gray-700 text-sm">Status</th>
-              <th className="text-left py-4 px-4 font-bold text-gray-700 text-sm">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -192,25 +191,6 @@ export default function ClientsSection() {
                     {client.status.charAt(0).toUpperCase() + client.status.slice(1)}
                   </span>
                 </td>
-                <td className="py-4 px-4">
-                  <div className="flex gap-2">
-                    <button
-                      title="Message"
-                      className="p-2 hover:bg-blue-100 rounded-lg transition text-blue-600"
-                    >
-                      <MessageSquare size={16} />
-                    </button>
-                    
-                    {client.nextSession && (
-                      <button
-                        title="Schedule"
-                        className="p-2 hover:bg-purple-100 rounded-lg transition text-purple-600"
-                      >
-                        <Calendar size={16} />
-                      </button>
-                    )}
-                  </div>
-                </td>
               </tr>
             ))}
           </tbody>
@@ -222,12 +202,6 @@ export default function ClientsSection() {
           <p className="text-gray-500">No clients found matching your search.</p>
         </div>
       )}
-
-      <div className="mt-6 pt-6 border-t border-gray-200 text-right">
-        <button className="px-6 py-2 bg-gradient-to-r from-[#e17b9e] to-[#d85a8a] text-white rounded-lg font-semibold hover:shadow-lg transition">
-          View All Clients
-        </button>
-      </div>
     </div>
   )
 }

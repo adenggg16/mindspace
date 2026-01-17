@@ -1,15 +1,16 @@
 "use client"
 
 import PsychologistNavbar from "@/components/psychologist/navbar"
-import { Search, Filter, Save, Trash2, Plus, File } from "lucide-react"
+import { Search, Filter, Save, File } from "lucide-react"
 import { useState } from "react"
 
 export default function PsychologistSessions() {
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedSession, setSelectedSession] = useState<string | null>(null)
   const [notes, setNotes] = useState("")
-
-  const sessions = [
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [editingNotes, setEditingNotes] = useState("")
+  const [sessionsData, setSessionsData] = useState([
     {
       id: "1",
       clientName: "Khalisa Azzahra",
@@ -65,13 +66,33 @@ export default function PsychologistSessions() {
       goals: ["Closure", "Ongoing support planning"],
       nextFocus: "Graduation from therapy"
     }
-  ]
+  ])
 
-  const filteredSessions = sessions.filter(session =>
+  const filteredSessions = sessionsData.filter(session =>
     session.clientName.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
-  const currentSession = sessions.find(s => s.id === selectedSession)
+  const currentSession = sessionsData.find(s => s.id === selectedSession)
+
+  const handleEditNotesClick = () => {
+    if (currentSession) {
+      setEditingNotes(currentSession.notes)
+      setIsEditModalOpen(true)
+    }
+  }
+
+  const handleSaveNotes = () => {
+    if (selectedSession) {
+      setSessionsData(
+        sessionsData.map(session =>
+          session.id === selectedSession
+            ? { ...session, notes: editingNotes }
+            : session
+        )
+      )
+      setIsEditModalOpen(false)
+    }
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-pink-50">
@@ -84,10 +105,6 @@ export default function PsychologistSessions() {
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Session Records</h1>
             <p className="text-gray-600 mt-2">View and manage session notes and progress</p>
           </div>
-          <button className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#e17b9e] to-[#d85a8a] text-white rounded-lg font-semibold hover:shadow-lg transition w-fit">
-            <Plus size={20} />
-            New Session
-          </button>
         </div>
 
         {/* Main Content */}
@@ -206,12 +223,12 @@ export default function PsychologistSessions() {
                 <div className="h-px bg-gray-200 my-6"></div>
 
                 <div className="flex gap-3">
-                  <button className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm">
+                  <button 
+                    onClick={handleEditNotesClick}
+                    className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm"
+                  >
                     <File size={16} />
                     Edit Notes
-                  </button>
-                  <button className="px-4 py-2 bg-gray-200 text-gray-900 rounded-lg hover:bg-gray-300 transition font-medium text-sm">
-                    <Trash2 size={16} />
                   </button>
                 </div>
               </div>
@@ -225,6 +242,50 @@ export default function PsychologistSessions() {
             </div>
           )}
         </div>
+
+        {/* Edit Notes Modal */}
+        {isEditModalOpen && (
+          <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-3xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Edit Session Notes</h2>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Session Notes</label>
+                  <textarea
+                    value={editingNotes}
+                    onChange={(e) => setEditingNotes(e.target.value)}
+                    rows={8}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d8a9ba] font-medium text-gray-900"
+                    placeholder="Enter session notes here..."
+                  />
+                </div>
+
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <p className="text-sm text-gray-600">
+                    <span className="font-semibold">Tip:</span> Include observations about client progress, emotional state, topics discussed, and recommendations for next session.
+                  </p>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-3 mt-8">
+                <button
+                  onClick={() => setIsEditModalOpen(false)}
+                  className="flex-1 bg-gray-300 text-gray-900 font-bold py-3 px-4 rounded-lg hover:bg-gray-400 transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSaveNotes}
+                  className="flex-1 bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition"
+                >
+                  Save Notes
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   )

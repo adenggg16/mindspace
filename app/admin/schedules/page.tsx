@@ -156,7 +156,7 @@ export default function ManageSchedules() {
       </button>
 
       {showForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-50">
           <div className="bg-white/95 backdrop-blur-md rounded-2xl p-6 shadow-2xl border border-white/30 w-96 max-h-96 overflow-y-auto">
             <h2 className="text-xl font-bold mb-4 text-gray-900">{editingSchedule ? 'Edit Jadwal' : 'Tambah Jadwal'}</h2>
             <form onSubmit={handleSubmit}>

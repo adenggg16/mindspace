@@ -2,10 +2,14 @@
 
 import PsychologistNavbar from "@/components/psychologist/navbar"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { ChevronLeft, ChevronRight, Clock, MapPin, Phone, Video, User } from "lucide-react"
 
 export default function PsychologistSchedule() {
+  const router = useRouter()
   const [currentDate, setCurrentDate] = useState(new Date(2026, 0, 9))
+  const [selectedAppointment, setSelectedAppointment] = useState<typeof appointments[0] | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const appointments = [
     {
@@ -266,11 +270,20 @@ export default function PsychologistSchedule() {
 
                       <div className="mt-4 flex gap-3">
                         
-                          <button className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm">
+                          <button 
+                            onClick={() => router.push(`/psychologist/chat/${appointment.id}`)}
+                            className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm"
+                          >
                             Join Session
                           </button>
                         
-                        <button className="flex-1 px-4 py-2 bg-gray-200 text-gray-900 rounded-lg hover:bg-gray-300 transition font-medium text-sm">
+                        <button 
+                          onClick={() => {
+                            setSelectedAppointment(appointment)
+                            setIsModalOpen(true)
+                          }}
+                          className="flex-1 px-4 py-2 bg-gray-200 text-gray-900 rounded-lg hover:bg-gray-300 transition font-medium text-sm"
+                        >
                           View Details
                         </button>
                       </div>
@@ -287,6 +300,77 @@ export default function PsychologistSchedule() {
             )}
           </div>
         </div>
+
+        {/* Appointment Details Modal */}
+        {isModalOpen && selectedAppointment && (
+          <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-3xl p-8 max-w-md w-full">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Appointment Details</h2>
+
+              <div className="space-y-4">
+                {/* Client Info */}
+                <div>
+                  <p className="text-gray-600 text-sm font-semibold mb-1">Client Name</p>
+                  <p className="text-gray-900 font-semibold">{selectedAppointment.clientName}</p>
+                </div>
+
+                {/* Status */}
+                <div>
+                  <p className="text-gray-600 text-sm font-semibold mb-1">Status</p>
+                  <span
+                    className={`inline-block px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(
+                      selectedAppointment.status
+                    )}`}
+                  >
+                    {selectedAppointment.status.charAt(0).toUpperCase() + selectedAppointment.status.slice(1)}
+                  </span>
+                </div>
+
+                {/* Date & Time */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-gray-600 text-sm font-semibold mb-1">Date</p>
+                    <p className="text-gray-900">
+                      {new Date(selectedAppointment.date).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600 text-sm font-semibold mb-1">Time</p>
+                    <p className="text-gray-900">
+                      {selectedAppointment.time} - {selectedAppointment.endTime}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Duration */}
+                <div>
+                  <p className="text-gray-600 text-sm font-semibold mb-1">Duration</p>
+                  <p className="text-gray-900">{selectedAppointment.duration} minutes</p>
+                </div>
+
+                {/* Notes */}
+                <div>
+                  <p className="text-gray-600 text-sm font-semibold mb-1">Session Notes</p>
+                  <p className="text-gray-900">{selectedAppointment.notes}</p>
+                </div>
+              </div>
+
+              {/* Close Button */}
+              <div className="flex gap-3 mt-8">
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className="flex-1 bg-gray-300 text-gray-900 font-bold py-3 px-4 rounded-lg hover:bg-gray-400 transition"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   )

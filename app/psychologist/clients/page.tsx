@@ -1,12 +1,15 @@
 "use client"
 
 import PsychologistNavbar from "@/components/psychologist/navbar"
-import { Search, Plus, MessageSquare, Calendar, TrendingUp, Eye } from "lucide-react"
+import { Search, MessageSquare, Calendar, TrendingUp, Eye } from "lucide-react"
 import { useState } from "react"
+import Link from "next/link"
 
 export default function PsychologistClients() {
   const [searchTerm, setSearchTerm] = useState("")
   const [filterStatus, setFilterStatus] = useState("all")
+  const [selectedClient, setSelectedClient] = useState<typeof clients[0] | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const clients = [
     {
@@ -119,10 +122,6 @@ export default function PsychologistClients() {
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900">My Clients</h1>
             <p className="text-gray-600 mt-2">Manage and track your client's progress</p>
           </div>
-          <button className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#e17b9e] to-[#d85a8a] text-white rounded-lg font-semibold hover:shadow-lg transition w-fit">
-            <Plus size={20} />
-            Add New Client
-          </button>
         </div>
 
         {/* Filters & Search */}
@@ -210,14 +209,24 @@ export default function PsychologistClients() {
                 {/* Actions */}
                 <div className="flex gap-3">
                   <button
+                    onClick={() => {
+                      setSelectedClient(client)
+                      setIsModalOpen(true)
+                    }}
                     title="View Profile"
                     className="flex-1 p-2 bg-blue-100 text-blue-600 hover:bg-blue-200 rounded-lg transition flex items-center justify-center gap-2 font-medium text-sm"
                   >
                     <Eye size={16} />
                     <span className="hidden sm:inline">View</span>
                   </button>
-                  
-                  
+                  <Link
+                    href={`/psychologist/chat-history/${client.id}`}
+                    title="View Chat History"
+                    className="flex-1 p-2 bg-pink-100 text-pink-600 hover:bg-pink-200 rounded-lg transition flex items-center justify-center gap-2 font-medium text-sm"
+                  >
+                    <MessageSquare size={16} />
+                    <span className="hidden sm:inline">Chat</span>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -227,6 +236,127 @@ export default function PsychologistClients() {
         {filteredClients.length === 0 && (
           <div className="text-center py-16 bg-white rounded-xl shadow-lg">
             <p className="text-gray-500 text-lg">No clients found matching your search.</p>
+          </div>
+        )}
+
+        {/* Client Details Modal */}
+        {isModalOpen && selectedClient && (
+          <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-3xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">{selectedClient.name}</h2>
+
+              <div className="space-y-6">
+                {/* Basic Info */}
+                <div className="border-b pb-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-gray-600 text-sm font-medium">Issue Type</p>
+                      <p className="text-gray-900 font-semibold mt-1">{selectedClient.issueType}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600 text-sm font-medium">Status</p>
+                      <div className="mt-1">
+                        <span
+                          className={`inline-block px-3 py-1 rounded-full text-xs font-semibold border ${getStatusBadge(
+                            selectedClient.status
+                          )}`}
+                        >
+                          {selectedClient.status.charAt(0).toUpperCase() + selectedClient.status.slice(1)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Contact Info */}
+                <div className="border-b pb-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Contact Information</h3>
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-gray-600 text-sm font-medium">Email</p>
+                      <p className="text-gray-900 mt-1">{selectedClient.email}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600 text-sm font-medium">Phone</p>
+                      <p className="text-gray-900 mt-1">{selectedClient.phone}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Session Details */}
+                <div className="border-b pb-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Session Information</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-gray-600 text-sm font-medium">Total Sessions</p>
+                      <p className="text-gray-900 font-semibold text-xl mt-1">{selectedClient.totalSessions}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600 text-sm font-medium">Progress</p>
+                      <div className="mt-2 flex items-center gap-2">
+                        <div className="w-full bg-gray-200 rounded-full h-3">
+                          <div
+                            className="bg-gradient-to-r from-[#e17b9e] to-[#d85a8a] h-3 rounded-full"
+                            style={{ width: `${selectedClient.progress}%` }}
+                          ></div>
+                        </div>
+                        <span className="font-semibold text-gray-900 min-w-fit">{selectedClient.progress}%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Dates */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Timeline</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <p className="text-gray-600 text-sm font-medium">Start Date</p>
+                      <p className="text-gray-900 mt-1">
+                        {new Date(selectedClient.startDate).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600 text-sm font-medium">Last Session</p>
+                      <p className="text-gray-900 mt-1">
+                        {new Date(selectedClient.lastSession).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600 text-sm font-medium">Next Session</p>
+                      <p className="text-gray-900 mt-1">
+                        {selectedClient.nextSession
+                          ? new Date(selectedClient.nextSession).toLocaleDateString("en-US", {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            })
+                          : "No session scheduled"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Close Button */}
+              <div className="flex gap-3 mt-8 pt-6 border-t">
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className="flex-1 bg-gray-300 text-gray-900 font-bold py-3 px-4 rounded-lg hover:bg-gray-400 transition"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </main>

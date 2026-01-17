@@ -230,7 +230,7 @@ export default function PaymentMethodPage() {
 
       {/* Payment Modal */}
       {showPaymentModal && !paymentComplete && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl">
             {selectedPaymentMethod === "qris" ? (
               // QRIS Payment Modal
@@ -362,7 +362,7 @@ export default function PaymentMethodPage() {
 
       {/* Payment Complete Modal */}
       {paymentComplete && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl text-center">
             <div className="mb-6">
               <div className="w-20 h-20 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">

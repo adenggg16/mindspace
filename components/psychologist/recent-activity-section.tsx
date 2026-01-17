@@ -90,10 +90,6 @@ export default function RecentActivitySection() {
             </div>
           ))}
         </div>
-
-        <button className="w-full mt-6 py-2 text-center text-sm font-semibold text-[#e17b9e] hover:bg-pink-50 rounded-lg transition">
-          View All Sessions
-        </button>
       </div>
 
 

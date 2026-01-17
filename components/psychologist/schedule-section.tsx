@@ -1,62 +1,174 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ChevronLeft, ChevronRight, Clock, MapPin, Calendar } from "lucide-react"
 
 interface Appointment {
   id: string
   clientName: string
+  clientEmail: string
+  clientPhone: string
   date: string
   time: string
   duration: number
   status: "confirmed" | "pending" | "completed"
+  issueType: string
+}
+
+interface ClientDetailsModalProps {
+  isOpen: boolean
+  appointment: Appointment | null
+  onClose: () => void
+}
+
+function ClientDetailsModal({ isOpen, appointment, onClose }: ClientDetailsModalProps) {
+  if (!isOpen || !appointment) return null
+
+  return (
+    <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-3xl p-8 max-w-md w-full">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Client Details</h2>
+
+        <div className="space-y-4">
+          {/* Name */}
+          <div>
+            <p className="text-gray-600 text-sm font-semibold mb-1">Name</p>
+            <p className="text-gray-900 font-semibold">{appointment.clientName}</p>
+          </div>
+
+          {/* Email */}
+          <div>
+            <p className="text-gray-600 text-sm font-semibold mb-1">Email</p>
+            <p className="text-gray-900">{appointment.clientEmail}</p>
+          </div>
+
+          {/* Phone */}
+          <div>
+            <p className="text-gray-600 text-sm font-semibold mb-1">Phone</p>
+            <p className="text-gray-900">{appointment.clientPhone}</p>
+          </div>
+
+          {/* Issue Type */}
+          <div>
+            <p className="text-gray-600 text-sm font-semibold mb-1">Issue Type</p>
+            <p className="text-gray-900">{appointment.issueType}</p>
+          </div>
+
+          {/* Appointment Details */}
+          <div>
+            <p className="text-gray-600 text-sm font-semibold mb-1">Appointment Date & Time</p>
+            <p className="text-gray-900">
+              {new Date(appointment.date).toLocaleDateString("en-US", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}{" "}
+              at {appointment.time}
+            </p>
+          </div>
+
+          {/* Duration */}
+          <div>
+            <p className="text-gray-600 text-sm font-semibold mb-1">Duration</p>
+            <p className="text-gray-900">{appointment.duration} minutes</p>
+          </div>
+
+          {/* Status */}
+          <div>
+            <p className="text-gray-600 text-sm font-semibold mb-1">Status</p>
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
+              {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
+            </span>
+          </div>
+        </div>
+
+        {/* Close Button */}
+        <div className="flex gap-3 mt-8">
+          <button
+            onClick={onClose}
+            className="flex-1 bg-gray-300 text-gray-900 font-bold py-3 px-4 rounded-lg hover:bg-gray-400 transition"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export default function ScheduleSection() {
-  const [currentDate, setCurrentDate] = useState(new Date(2026, 0, 9))
+  const [currentDate, setCurrentDate] = useState<Date>(new Date(2026, 0, 9))
+  const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   const appointments: Appointment[] = [
     {
       id: "1",
       clientName: "Khalisa Azzahra",
+      clientEmail: "khalisa.azzahra@student.edu",
+      clientPhone: "+62 812-3456-7890",
       date: "2026-01-09",
       time: "10:00",
       duration: 60,
-      status: "confirmed"
+      status: "confirmed",
+      issueType: "Anxiety"
     },
     {
       id: "2",
       clientName: "Salsabila Adelia Putrie",
+      clientEmail: "salsabila.adelia.putrie@student.edu",
+      clientPhone: "+62 812-9876-5432",
       date: "2026-01-09",
       time: "11:30",
       duration: 50,
-      status: "confirmed"
+      status: "confirmed",
+      issueType: "Stress Management"
     },
     {
       id: "3",
       clientName: "Ayu Agustyna Hoky",
+      clientEmail: "ayu.agustyna.hoky@student.edu",
+      clientPhone: "+62 812-5555-6666",
       date: "2026-01-10",
       time: "14:00",
       duration: 60,
-      status: "pending"
+      status: "pending",
+      issueType: "Depression"
     },
     {
       id: "4",
       clientName: "Muhammad",
+      clientEmail: "muhammad@student.edu",
+      clientPhone: "+62 812-7777-8888",
       date: "2026-01-11",
       time: "09:00",
       duration: 45,
-      status: "confirmed"
+      status: "confirmed",
+      issueType: "Relationship Issues"
     },
     {
       id: "5",
       clientName: "Reyhan Zayyan",
+      clientEmail: "reyhan.zayyan@student.edu",
+      clientPhone: "+62 812-1111-2222",
       date: "2026-01-13",
       time: "16:00",
       duration: 60,
-      status: "completed"
+      status: "completed",
+      issueType: "Self-Esteem"
     }
   ]
+
+  const handleDetailsClick = (appointment: Appointment) => {
+    setSelectedAppointment(appointment)
+    setIsModalOpen(true)
+  }
 
   const getDaysInMonth = (date: Date) => {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
@@ -91,8 +203,13 @@ export default function ScheduleSection() {
     return type === "online" ? "text-blue-600" : "text-orange-600"
   }
 
+  if (!isClient) {
+    return null
+  }
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+    <>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
       {/* Calendar */}
       <div className="lg:col-span-1 bg-white rounded-xl shadow-lg p-6">
         <div className="flex items-center justify-between mb-6">
@@ -190,7 +307,10 @@ export default function ScheduleSection() {
                 </div>
 
                 <div className="flex justify-center">
-                  <button className="text-sm px-4 py-1.5 rounded-full border border-gray-300 hover:bg-gray-200 transition text-gray-700 font-medium">
+                  <button
+                    onClick={() => handleDetailsClick(appointment)}
+                    className="text-sm px-4 py-1.5 rounded-full border border-gray-300 hover:bg-gray-200 transition text-gray-700 font-medium"
+                  >
                     Details
                   </button>
                 </div>
@@ -205,6 +325,13 @@ export default function ScheduleSection() {
           </div>
         )}
       </div>
-    </div>
+      </div>
+
+      <ClientDetailsModal 
+        isOpen={isModalOpen}
+        appointment={selectedAppointment}
+        onClose={() => setIsModalOpen(false)}
+      />
+    </>
   )
 }
