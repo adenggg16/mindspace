@@ -22,12 +22,16 @@ interface Psychologist {
 export default function ManageSchedules() {
   // Mock data
   const [schedules, setSchedules] = useState<Schedule[]>([
-    { id: '1', date: new Date(), time: '10:00', studentName: 'John Doe', psychologistId: '3', psychologistName: 'Dr. Alice', status: 'scheduled' },
-    { id: '2', date: new Date(), time: '14:00', studentName: 'Jane Smith', status: 'scheduled' },
+    { id: '1', date: new Date('2026-01-09'), time: '10:00', studentName: 'Khalisa Azzahra', psychologistId: '6', psychologistName: 'Dr. Miftahul Jannah, M.Psi., Psikolog', status: 'scheduled' },
+    { id: '2', date: new Date('2026-01-09'), time: '11:30', studentName: 'Salsabila Adelia Putrie', psychologistId: '7', psychologistName: 'Dr. Nadia Wulandari, M.Psi., Psikolog', status: 'scheduled' },
+    { id: '3', date: new Date('2026-01-10'), time: '14:00', studentName: 'Ayu Agustyna Hoky', psychologistId: '8', psychologistName: 'Dr. Dian, M.Psi., Psikolog', status: 'scheduled' },
+    { id: '4', date: new Date('2026-01-11'), time: '09:00', studentName: 'Muhammad', psychologistId: '6', psychologistName: 'Dr. Miftahul Jannah, M.Psi., Psikolog', status: 'scheduled' },
+    { id: '5', date: new Date('2026-01-13'), time: '16:00', studentName: 'Reyhan Zayyan', psychologistId: '7', psychologistName: 'Dr. Nadia Wulandari, M.Psi., Psikolog', status: 'completed' },
   ]);
   const [psychologists, setPsychologists] = useState<Psychologist[]>([
-    { id: '3', name: 'Dr. Alice' },
-    { id: '4', name: 'Dr. Bob' },
+    { id: '6', name: 'Dr. Miftahul Jannah, M.Psi., Psikolog' },
+    { id: '7', name: 'Dr. Nadia Wulandari, M.Psi., Psikolog' },
+    { id: '8', name: 'Dr. Dian, M.Psi., Psikolog' },
   ]);
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -147,21 +151,21 @@ export default function ManageSchedules() {
 
   return (
     <div>
-      <h1 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-8">Kelola Jadwal Konseling</h1>
+      <h1 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-8">Manage Consultation Schedule</h1>
       <button
         onClick={() => setShowForm(true)}
         className="mb-4 px-6 py-3 bg-[#B58D97] hover:bg-[#d4779b] text-white rounded-2xl shadow-lg transition-colors duration-200"
       >
-        Tambah Jadwal
+        Add Schedule
       </button>
 
       {showForm && (
         <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-50">
           <div className="bg-white/95 backdrop-blur-md rounded-2xl p-6 shadow-2xl border border-white/30 w-96 max-h-96 overflow-y-auto">
-            <h2 className="text-xl font-bold mb-4 text-gray-900">{editingSchedule ? 'Edit Jadwal' : 'Tambah Jadwal'}</h2>
+            <h2 className="text-xl font-bold mb-4 text-gray-900">{editingSchedule ? 'Edit Schedule' : 'Add Schedule'}</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
-                <label className="block text-sm font-medium mb-1 text-gray-700">Tanggal</label>
+                <label className="block text-sm font-medium mb-1 text-gray-700">Date</label>
                 <input
                   type="date"
                   value={formData.date}
@@ -171,7 +175,7 @@ export default function ManageSchedules() {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-sm font-medium mb-1 text-gray-700">Waktu</label>
+                <label className="block text-sm font-medium mb-1 text-gray-700">Time</label>
                 <input
                   type="time"
                   value={formData.time}
@@ -181,7 +185,7 @@ export default function ManageSchedules() {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-sm font-medium mb-1 text-gray-700">Nama Mahasiswa</label>
+                <label className="block text-sm font-medium mb-1 text-gray-700">Student Name</label>
                 <input
                   type="text"
                   value={formData.studentName}
@@ -191,13 +195,13 @@ export default function ManageSchedules() {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-sm font-medium mb-1 text-gray-700">Psikolog</label>
+                <label className="block text-sm font-medium mb-1 text-gray-700">Psychologist</label>
                 <select
                   value={formData.psychologistId}
                   onChange={(e) => setFormData({ ...formData, psychologistId: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B58D97] focus:border-transparent"
                 >
-                  <option value="">Pilih Psikolog</option>
+                  <option value="">Select Psychologist</option>
                   {psychologists.map((psychologist) => (
                     <option key={psychologist.id} value={psychologist.id}>
                       {psychologist.name}
@@ -215,13 +219,13 @@ export default function ManageSchedules() {
                   }}
                   className="mr-2 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors duration-200"
                 >
-                  Batal
+                  Cancel
                 </button>
                 <button
                   type="submit"
                   className="px-4 py-2 bg-[#B58D97] hover:bg-[#d4779b] text-white rounded-lg transition-colors duration-200"
                 >
-                  Simpan
+                  Save
                 </button>
               </div>
             </form>
@@ -233,12 +237,12 @@ export default function ManageSchedules() {
         <table className="min-w-full">
           <thead className="bg-[#B58D97]/10">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Waktu</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mahasiswa</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Psikolog</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Psychologist</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -284,7 +288,7 @@ export default function ManageSchedules() {
                     onClick={() => deleteSchedule(schedule.id)}
                     className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors duration-200"
                   >
-                    Hapus
+                    Delete
                   </button>
                 </td>
               </tr>

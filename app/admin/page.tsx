@@ -12,12 +12,12 @@ interface SummaryData {
 }
 
 export default function AdminDashboard() {
-  // Mock data for display
+  // Mock data based on actual client and psychologist data
   const [data, setData] = useState<SummaryData>({
-    totalStudents: 150,
-    totalPsychologists: 10,
-    todaysSchedules: 5,
-    totalPayments: 200,
+    totalStudents: 5,
+    totalPsychologists: 3,
+    todaysSchedules: 2,
+    totalPayments: 3,
   });
   const [loading, setLoading] = useState(false);
 
@@ -64,22 +64,22 @@ export default function AdminDashboard() {
 
   return (
     <div>
-      <h1 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-8">Dashboard Admin</h1>
+      <h1 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-8">Admin Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/30">
-          <h2 className="text-xl font-semibold mb-2 text-gray-800">Total Mahasiswa</h2>
+          <h2 className="text-xl font-semibold mb-2 text-gray-800">Total Students</h2>
           <p className="text-4xl font-bold text-blue-600">{data.totalStudents}</p>
         </div>
         <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/30">
-          <h2 className="text-xl font-semibold mb-2 text-gray-800">Total Psikolog</h2>
+          <h2 className="text-xl font-semibold mb-2 text-gray-800">Total Psychologists</h2>
           <p className="text-4xl font-bold text-green-600">{data.totalPsychologists}</p>
         </div>
         <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/30">
-          <h2 className="text-xl font-semibold mb-2 text-gray-800">Jadwal Konseling Hari Ini</h2>
+          <h2 className="text-xl font-semibold mb-2 text-gray-800">Today's Consultations</h2>
           <p className="text-4xl font-bold text-purple-600">{data.todaysSchedules}</p>
         </div>
         <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/30">
-          <h2 className="text-xl font-semibold mb-2 text-gray-800">Total Pembayaran</h2>
+          <h2 className="text-xl font-semibold mb-2 text-gray-800">Total Payments</h2>
           <p className="text-4xl font-bold text-red-600">{data.totalPayments}</p>
         </div>
       </div>

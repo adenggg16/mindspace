@@ -17,8 +17,11 @@ interface Payment {
 export default function ManagePayments() {
   // Mock data
   const [payments, setPayments] = useState<Payment[]>([
-    { id: '1', studentId: '1', studentName: 'John Doe', amount: 50000, status: 'pending', date: new Date(), description: 'Konsultasi 1' },
-    { id: '2', studentId: '2', studentName: 'Jane Smith', amount: 75000, status: 'confirmed', date: new Date(), description: 'Konsultasi 2' },
+    { id: '1', studentId: '1', studentName: 'Khalisa Azzahra', amount: 150000, status: 'confirmed', date: new Date('2026-01-09'), description: 'Consultation with Dr. Miftahul Jannah' },
+    { id: '2', studentId: '2', studentName: 'Salsabila Adelia Putrie', amount: 180000, status: 'confirmed', date: new Date('2026-01-08'), description: 'Consultation with Dr. Nadia Wulandari' },
+    { id: '3', studentId: '3', studentName: 'Ayu Agustyna Hoky', amount: 130000, status: 'pending', date: new Date('2026-01-10'), description: 'Consultation with Dr. Dian' },
+    { id: '4', studentId: '4', studentName: 'Muhammad', amount: 150000, status: 'confirmed', date: new Date('2026-01-11'), description: 'Consultation with Dr. Miftahul Jannah' },
+    { id: '5', studentId: '5', studentName: 'Reyhan Zayyan', amount: 180000, status: 'confirmed', date: new Date('2026-01-13'), description: 'Consultation with Dr. Nadia Wulandari' },
   ]);
   const [loading, setLoading] = useState(false);
 
@@ -76,17 +79,17 @@ export default function ManagePayments() {
 
   return (
     <div>
-      <h1 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-8">Pembayaran</h1>
+      <h1 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-8">Payments</h1>
       <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-white/30 overflow-hidden">
         <table className="min-w-full">
           <thead className="bg-[#B58D97]/10">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mahasiswa</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jumlah</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deskripsi</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -102,8 +105,8 @@ export default function ManagePayments() {
                     payment.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
                     'bg-red-100 text-red-800'
                   }`}>
-                    {payment.status === 'confirmed' ? 'Dikonfirmasi' :
-                     payment.status === 'pending' ? 'Pending' : 'Dibatalkan'}
+                    {payment.status === 'confirmed' ? 'Confirmed' :
+                     payment.status === 'pending' ? 'Pending' : 'Cancelled'}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
@@ -113,13 +116,13 @@ export default function ManagePayments() {
                         onClick={() => confirmPayment(payment.id)}
                         className="mr-2 px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition-colors duration-200"
                       >
-                        Konfirmasi
+                        Confirm
                       </button>
                       <button
                         onClick={() => cancelPayment(payment.id)}
                         className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors duration-200"
                       >
-                        Batalkan
+                        Cancel
                       </button>
                     </>
                   )}

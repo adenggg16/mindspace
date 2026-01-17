@@ -11,11 +11,11 @@ interface AdminLayoutProps {
 
 const menuItems = [
   { name: 'Dashboard', href: '/admin', icon: '📊' },
-  { name: 'Kelola Pengguna', href: '/admin/users', icon: '👥' },
-  { name: 'Kelola Jadwal Konseling', href: '/admin/schedules', icon: '📅' },
-  { name: 'Kelola Artikel', href: '/admin/articles', icon: '📝' },
-  { name: 'Pembayaran', href: '/admin/payments', icon: '💰' },
-  { name: 'Laporan', href: '/admin/reports', icon: '📋' },
+  { name: 'Manage Users', href: '/admin/users', icon: '👥' },
+  { name: 'Manage Consultation Schedule', href: '/admin/schedules', icon: '📅' },
+  { name: 'Manage Articles', href: '/admin/articles', icon: '📝' },
+  { name: 'Payments', href: '/admin/payments', icon: '💰' },
+  { name: 'Reports', href: '/admin/reports', icon: '📋' },
 ];
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
