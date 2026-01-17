@@ -7,7 +7,7 @@ import { useState } from "react"
 export default function PsychologistProfile() {
   const [isEditing, setIsEditing] = useState(false)
   const [profileData, setProfileData] = useState({
-    name: "Dr. Miftahul Jannah, M.Psi.",
+    name: "dr. Miftahul Jannah, M.Psi.",
     title: "Clinical Psychologist",
     email: "miftahul.jannah@mindspace.com",
     phone: "+62 812-3456-7890",

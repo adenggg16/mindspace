@@ -63,7 +63,12 @@ export default function GetToKnowYouModal({ isOpen, onClose }: GetToKnowYouModal
 
   const handleSubmit = () => {
     console.log("Form submitted:", formData)
-    // Save form data to database or local storage
+    // Save form data to localStorage with timestamp
+    const dataToSave = {
+      ...formData,
+      submittedAt: new Date().toISOString(),
+    }
+    localStorage.setItem("getToKnowYouData", JSON.stringify(dataToSave))
     setIsSuccess(true)
   }
 

@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import DashboardNavbar from "@/components/dashboard/navbar"
 import { ProfileCard } from "@/components/profile/profile-card"
 import { SettingsSection } from "@/components/profile/settings-section"
@@ -15,17 +16,53 @@ interface ProfileData {
   image: string
 }
 
-const profileData: ProfileData = {
+const defaultProfileData: ProfileData = {
   name: "Salsabila Adelia Putrie",
   birthDate: "December, 7, 2000",
-  location: "Singapore, Indonesia",
-  email: "adeng16.gmail.com",
+  location: "Jakarta, Indonesia",
+  email: "salsabila.adelia@gmail.com",
   phone: "+62 876543296",
-  socialHandle: "rpl_kelompakkece",
+  socialHandle: "salsaadl",
   image: "/images/adel.png",
 }
 
 export default function ProfilePage() {
+  const [profileData, setProfileData] = useState<ProfileData>(defaultProfileData)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [formData, setFormData] = useState<ProfileData>(defaultProfileData)
+
+  useEffect(() => {
+    const savedProfile = localStorage.getItem("profileData")
+    if (savedProfile) {
+      const data = JSON.parse(savedProfile)
+      setProfileData(data)
+      setFormData(data)
+    }
+  }, [])
+
+  const handleEditClick = () => {
+    setFormData(profileData)
+    setIsEditModalOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    setIsEditModalOpen(false)
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
+  const handleSaveProfile = () => {
+    setProfileData(formData)
+    localStorage.setItem("profileData", JSON.stringify(formData))
+    setIsEditModalOpen(false)
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-blue-100">
       <DashboardNavbar />
@@ -42,6 +79,8 @@ export default function ProfilePage() {
               phone={profileData.phone}
               socialHandle={profileData.socialHandle}
               imageUrl={profileData.image}
+              showEditButton={true}
+              onEditClick={handleEditClick}
             />
           </div>
 
@@ -63,6 +102,106 @@ export default function ProfilePage() {
           </div>
         </div>
       </main>
+
+      {/* Edit Profile Modal */}
+      {isEditModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl md:rounded-3xl p-6 md:p-8 max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">Edit Profile</h2>
+
+            <div className="space-y-4 md:space-y-5">
+              {/* Name */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d8a9ba]"
+                />
+              </div>
+
+              {/* Birth Date */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Birth Date</label>
+                <input
+                  type="text"
+                  name="birthDate"
+                  value={formData.birthDate}
+                  onChange={handleInputChange}
+                  placeholder="e.g., December, 7, 2000"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d8a9ba]"
+                />
+              </div>
+
+              {/* Location */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Location</label>
+                <input
+                  type="text"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d8a9ba]"
+                />
+              </div>
+
+              {/* Email */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d8a9ba]"
+                />
+              </div>
+
+              {/* Phone */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Phone</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d8a9ba]"
+                />
+              </div>
+
+              {/* Social Handle */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Social Handle</label>
+                <input
+                  type="text"
+                  name="socialHandle"
+                  value={formData.socialHandle}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d8a9ba]"
+                />
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-3 mt-8">
+              <button
+                onClick={handleCloseModal}
+                className="flex-1 bg-gray-300 text-gray-900 font-bold py-2 md:py-3 px-4 rounded-lg hover:bg-gray-400 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveProfile}
+                className="flex-1 bg-[#d8a9ba] text-gray-900 font-bold py-2 md:py-3 px-4 rounded-lg hover:bg-[#c9949e] transition"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

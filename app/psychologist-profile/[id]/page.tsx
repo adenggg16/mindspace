@@ -23,14 +23,14 @@ export default function PsychologistProfilePage() {
   const psychologists = [
     {
       id: 1,
-      name: "Dr. Miftahul Jannah, M.Psi., Psikolog",
+      name: "dr. Miftahul Jannah, M.Psi., Psikolog",
       university: "Universitas Paramadina - Cipayung",
       experience: "8+ years",
       specialization: ["Clinical Psychology", "Cognitive Behavioral Therapy", "Anxiety Disorders", "Depression"],
       education: [
-        "Doctor of Psychology - Universitas Paramadina (2018)",
+        "Doctor of Psychology - Paramadina University (2018)",
         "Master of Psychology - Universitas Indonesia (2015)",
-        "Bachelor of Psychology - Universitas Paramadina (2013)"
+        "Bachelor of Psychology - Paramadina University (2013)"
       ],
       certifications: [
         "Certified CBT Practitioner",
@@ -38,9 +38,9 @@ export default function PsychologistProfilePage() {
         "Mental Health First Aid Instructor"
       ],
       languages: ["Indonesian", "English"],
-      about: "Dr. Miftahul Jannah is a dedicated clinical psychologist with over 8 years of experience helping individuals overcome mental health challenges. She specializes in cognitive behavioral therapy and has helped numerous clients manage anxiety, depression, and stress-related disorders. Her approach combines evidence-based therapeutic techniques with compassionate care.",
+      about: "dr. Miftahul Jannah is a dedicated clinical psychologist with over 8 years of experience helping individuals overcome mental health challenges. She specializes in cognitive behavioral therapy and has helped numerous clients manage anxiety, depression, and stress-related disorders. Her approach combines evidence-based therapeutic techniques with compassionate care.",
       approach: "I believe in creating a safe, non-judgmental space where clients can explore their thoughts and feelings. My therapeutic approach integrates CBT techniques with mindfulness practices to help clients develop coping strategies and achieve lasting positive change.",
-      availability: "Monday - Friday: 9:00 AM - 5:00 PM",
+      availability: "Sun • Wed • Thu • Fri • Sat = 9:00 AM - 7:00 PM",
       consultationFee: "Rp 150,000 per session",
       rating: 4.9,
       reviews: 127,
@@ -53,7 +53,7 @@ export default function PsychologistProfilePage() {
     },
     {
       id: 2,
-      name: "Dr. Nadia Wulandari, M.Psi., Psikolog",
+      name: "dr. Nadia Wulandari, M.Psi., Psikolog",
       university: "Universitas Indonesia - Jakarta",
       experience: "10+ years",
       specialization: ["Child Psychology", "Family Therapy", "Trauma", "Relationship Counseling"],
@@ -68,9 +68,9 @@ export default function PsychologistProfilePage() {
         "Play Therapy Certification"
       ],
       languages: ["Indonesian", "English", "Javanese"],
-      about: "Dr. Nadia Wulandari brings over a decade of experience in child and family psychology. She has extensive expertise in working with children, adolescents, and families facing various psychological challenges. Her work focuses on creating healthy family dynamics and supporting child development.",
+      about: "dr. Nadia Wulandari brings over a decade of experience in child and family psychology. She has extensive expertise in working with children, adolescents, and families facing various psychological challenges. Her work focuses on creating healthy family dynamics and supporting child development.",
       approach: "My practice centers on understanding the unique needs of each family member and fostering healthy relationships. I use a combination of play therapy, family systems therapy, and cognitive behavioral techniques to address individual and relational concerns.",
-      availability: "Tuesday - Saturday: 10:00 AM - 6:00 PM",
+      availability: "Sun • Mon • Thu • Fri = 9:00 AM - 7:00 PM",
       consultationFee: "Rp 180,000 per session",
       rating: 4.8,
       reviews: 95,
@@ -83,14 +83,14 @@ export default function PsychologistProfilePage() {
     },
     {
       id: 3,
-      name: "Dr. Dian, M.Psi., Psikolog",
+      name: "dr. Dian, M.Psi., Psikolog",
       university: "Universitas Trisakti - Grogol",
       experience: "6+ years",
       specialization: ["Adolescent Psychology", "Career Counseling", "Stress Management", "Self-Esteem Issues"],
       education: [
-        "Doctor of Psychology - Universitas Trisakti (2020)",
-        "Master of Psychology - Universitas Trisakti (2017)",
-        "Bachelor of Psychology - Universitas Trisakti (2015)"
+        "Doctor of Psychology - Trisakti University (2020)",
+        "Master of Psychology - Trisakti University (2017)",
+        "Bachelor of Psychology - Trisakti University (2015)"
       ],
       certifications: [
         "Certified Career Counselor",
@@ -98,9 +98,9 @@ export default function PsychologistProfilePage() {
         "Stress Management Consultant"
       ],
       languages: ["Indonesian", "English"],
-      about: "Dr. Dian specializes in adolescent psychology and career counseling, helping young adults navigate the challenges of growing up and career development. With 6+ years of experience, she has guided numerous individuals through major life transitions and personal growth journeys.",
+      about: "dr. Dian specializes in adolescent psychology and career counseling, helping young adults navigate the challenges of growing up and career development. With 6+ years of experience, she has guided numerous individuals through major life transitions and personal growth journeys.",
       approach: "I focus on empowering adolescents and young adults to build resilience and self-confidence. My approach combines career guidance with mental health support, helping clients discover their strengths and navigate life's challenges with greater clarity and purpose.",
-      availability: "Monday - Thursday: 8:00 AM - 4:00 PM",
+      availability: "Sun • Wed • Thu • Sat = 9:00 AM - 7:00 PM",
       consultationFee: "Rp 130,000 per session",
       rating: 4.7,
       reviews: 83,

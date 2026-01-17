@@ -1,7 +1,7 @@
 "use client"
 
 import { ArticleDetail } from "@/lib/articlesData"
-import { useState } from "react"
+import { useEffect } from "react"
 
 interface ArticleModalProps {
   article: ArticleDetail
@@ -10,6 +10,32 @@ interface ArticleModalProps {
 }
 
 export function ArticleModal({ article, isOpen, onClose }: ArticleModalProps) {
+  useEffect(() => {
+    if (isOpen) {
+      // Save article to reading history when modal opens
+      const articleToSave = {
+        id: article.id,
+        title: article.title,
+        author: "MindSpace Team",
+        category: "Psychology",
+        readAt: new Date().toISOString(),
+        duration: "5-10 min read",
+      }
+
+      // Get existing articles from localStorage
+      const existingArticles = localStorage.getItem("articlesRead")
+      let articlesArray = existingArticles ? JSON.parse(existingArticles) : []
+
+      // Check if article already exists (by id)
+      const articleExists = articlesArray.some((a: any) => a.id === article.id)
+
+      if (!articleExists) {
+        articlesArray.unshift(articleToSave) // Add to beginning
+        localStorage.setItem("articlesRead", JSON.stringify(articlesArray))
+      }
+    }
+  }, [isOpen, article])
+
   if (!isOpen) return null
 
   return (

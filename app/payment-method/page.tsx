@@ -18,19 +18,19 @@ export default function PaymentMethodPage() {
   const psychologists = [
     {
       id: 1,
-      name: "Dr. Miftahul Jannah, M.Psi., Psikolog",
+      name: "dr. Miftahul Jannah, M.Psi., Psikolog",
       university: "Universitas Paramadina - Cipayung",
       consultationFee: "Rp 150,000 per session"
     },
     {
       id: 2,
-      name: "Dr. Nadia Wulandari, M.Psi., Psikolog",
+      name: "dr. Nadia Wulandari, M.Psi., Psikolog",
       university: "Universitas Indonesia - Jakarta",
       consultationFee: "Rp 180,000 per session"
     },
     {
       id: 3,
-      name: "Dr. Dian, M.Psi., Psikolog",
+      name: "dr. Dian, M.Psi., Psikolog",
       university: "Universitas Trisakti - Grogol",
       consultationFee: "Rp 130,000 per session"
     }
@@ -168,7 +168,7 @@ export default function PaymentMethodPage() {
                 <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-2.16-2.66c-.44-.53-1.25-.58-1.78-.14-.53.44-.58 1.25-.14 1.78l3 3.67c.25.31.61.5 1 .5s.75-.19 1-.5l4-5.07c.44-.53.39-1.34-.14-1.78-.53-.44-1.34-.39-1.78.14z" />
               </svg>
               <span className="text-sm">
-                {new Date(date).toLocaleDateString('id-ID', {
+                {new Date(date).toLocaleDateString('en-US', {
                   weekday: 'long',
                   year: 'numeric',
                   month: 'long',
@@ -187,13 +187,13 @@ export default function PaymentMethodPage() {
               </span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-gray-700 font-semibold">Total Pembayaran:</span>
+              <span className="text-gray-700 font-semibold">Total Amount:</span>
               <span className="text-2xl font-bold text-[#1a2e4a]">{fee}</span>
             </div>
           </div>
 
           {/* Payment Methods Grid */}
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Pilih Metode Pembayaran</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-6">Select Payment Method</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
             {paymentMethods.map((method) => (
@@ -256,8 +256,8 @@ export default function PaymentMethodPage() {
                     </svg>
                   </div>
                 </div>
-                <h2 className="text-xl font-bold text-gray-900 mb-2">Metode Pembayaran QRIS</h2>
-                <p className="text-gray-600 mb-6">Silahkan scan untuk melanjutkan pembayaran</p>
+                <h2 className="text-xl font-bold text-gray-900 mb-2">QRIS Payment</h2>
+                <p className="text-gray-600 mb-6">Please scan the QR code to proceed with payment.</p>
               </div>
             ) : (
               // Bank/GoPay Payment Modal
@@ -281,11 +281,11 @@ export default function PaymentMethodPage() {
                 
                 <div className="bg-gray-100 rounded-xl p-6 mb-6">
                   <p className="text-gray-600 text-sm mb-3">
-                    {selectedPaymentMethod === "gopay" && "Nomor GoPay"}
-                    {selectedPaymentMethod === "mandiri" && "Nomor Rekening"}
-                    {selectedPaymentMethod === "dana" && "Nomor Rekening"}
-                    {selectedPaymentMethod === "bca" && "Nomor Rekening"}
-                    {selectedPaymentMethod === "bni" && "Nomor Rekening"}
+                    {selectedPaymentMethod === "gopay" && "GoPay Number"}
+                    {selectedPaymentMethod === "mandiri" && "Account Number"}
+                    {selectedPaymentMethod === "dana" && "Account Number"}
+                    {selectedPaymentMethod === "bca" && "Account Number"}
+                    {selectedPaymentMethod === "bni" && "Account Number"}
                   </p>
                   <p className="text-2xl font-bold text-[#1a2e4a] mb-3">
                     {selectedPaymentMethod === "gopay" && "+62 812-3456-7890"}
@@ -301,27 +301,49 @@ export default function PaymentMethodPage() {
                                   selectedPaymentMethod === "dana" ? "0987654321" :
                                   selectedPaymentMethod === "bca" ? "1122334455" : "5566778899"
                       navigator.clipboard.writeText(text)
-                      alert('Nomor disalin!')
+                      alert('Number copied!')
                     }}
                     className="text-sm text-[#1a2e4a] hover:text-[#0f1f31] font-semibold"
                   >
-                    Salin Nomor
+                    Copy Number
                   </button>
                 </div>
 
-                <p className="text-gray-600 text-sm mb-6">Total Pembayaran: <span className="font-bold text-[#1a2e4a] text-lg">{fee}</span></p>
+                <p className="text-gray-600 text-sm mb-6">Total Amount: <span className="font-bold text-[#1a2e4a] text-lg">{fee}</span></p>
               </div>
             )}
 
             {/* Confirm Button */}
             <button
               onClick={() => {
+                // Save consultation booking to localStorage
+                const bookingId = Date.now().toString()
+                const consultationBooking = {
+                  id: bookingId,
+                  psychologistName: psychologist.name,
+                  psychologistUniversity: psychologist.university,
+                  bookingDate: new Date().toISOString(),
+                  consultationDate: date,
+                  consultationTime: time,
+                  consultationFee: fee,
+                  status: "upcoming",
+                  bookedAt: new Date().toISOString(),
+                }
+
+                // Get existing bookings
+                const existingBookings = localStorage.getItem("consultationBookings")
+                let bookingsArray = existingBookings ? JSON.parse(existingBookings) : []
+
+                // Add new booking
+                bookingsArray.unshift(consultationBooking)
+                localStorage.setItem("consultationBookings", JSON.stringify(bookingsArray))
+
                 setShowPaymentModal(false)
                 setPaymentComplete(true)
               }}
               className="w-full bg-[#1a2e4a] hover:bg-[#0f1f31] text-white font-bold py-3 rounded-lg transition"
             >
-              Lanjutkan
+              Continue
             </button>
 
             {/* Cancel Button */}
@@ -332,7 +354,7 @@ export default function PaymentMethodPage() {
               }}
               className="w-full mt-3 bg-gray-200 hover:bg-gray-300 text-gray-900 font-semibold py-2 rounded-lg transition"
             >
-              Batal
+              Cancel
             </button>
           </div>
         </div>
@@ -349,24 +371,24 @@ export default function PaymentMethodPage() {
                 </svg>
               </div>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Pembayaran Selesai!</h2>
-            <p className="text-gray-600 mb-8">Terima kasih telah melakukan pembayaran. Booking Anda telah dikonfirmasi.</p>
-            
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Payment Complete!</h2>
+            <p className="text-gray-600 mb-8">Thank you for your payment. Your booking has been confirmed.</p>
+
             <div className="bg-blue-50 rounded-xl p-6 mb-6 text-left">
-              <h3 className="font-semibold text-gray-900 mb-4">Detail Booking</h3>
+              <h3 className="font-semibold text-gray-900 mb-4">Booking Details</h3>
               <div className="space-y-3">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Psikolog:</span>
+                  <span className="text-gray-600">Psychologist:</span>
                   <span className="font-semibold text-gray-900">{psychologist.name}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Tanggal:</span>
+                  <span className="text-gray-600">Date:</span>
                   <span className="font-semibold text-gray-900">
-                    {new Date(date).toLocaleDateString('id-ID')}
+                    {new Date(date).toLocaleDateString('en-US')}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Waktu:</span>
+                  <span className="text-gray-600">Time:</span>
                   <span className="font-semibold text-gray-900">
                     {time === "09:00" && "9:00 AM"}
                     {time === "14:00" && "2:00 PM"}
@@ -374,7 +396,7 @@ export default function PaymentMethodPage() {
                   </span>
                 </div>
                 <div className="flex justify-between text-sm border-t pt-3">
-                  <span className="text-gray-600">Total:</span>
+                  <span className="text-gray-600">Total Amount:</span>
                   <span className="font-bold text-[#1a2e4a] text-lg">{fee}</span>
                 </div>
               </div>
@@ -382,7 +404,7 @@ export default function PaymentMethodPage() {
 
             <Link href="/dashboard" className="block">
               <Button className="w-full bg-[#1a2e4a] hover:bg-[#0f1f31] text-white font-bold py-3 rounded-lg">
-                Kembali ke Dashboard
+                Back to Dashboard
               </Button>
             </Link>
           </div>

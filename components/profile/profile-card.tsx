@@ -10,6 +10,8 @@ interface ProfileCardProps {
   phone: string
   socialHandle: string
   imageUrl?: string
+  showEditButton?: boolean
+  onEditClick?: () => void
 }
 
 export function ProfileCard({
@@ -20,6 +22,8 @@ export function ProfileCard({
   phone,
   socialHandle,
   imageUrl = "/placeholder.svg",
+  showEditButton = false,
+  onEditClick,
 }: ProfileCardProps) {
   return (
     <div className="bg-white rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-lg flex flex-col items-center md:sticky md:top-24">
@@ -43,10 +47,15 @@ export function ProfileCard({
       </div>
 
       {/* Edit Profile Button */}
-      <button className="border-2 border-[#d8a9ba] text-gray-900 font-bold py-2 md:py-3 px-4 md:px-6 rounded-full mb-4 md:mb-6 hover:bg-[#f5f5f5] transition w-full flex items-center justify-center gap-2 text-sm md:text-base">
-        <span>✏️</span>
-        Edit Profile
-      </button>
+      {showEditButton && (
+        <button
+          onClick={onEditClick}
+          className="border-2 border-[#d8a9ba] text-gray-900 font-bold py-2 md:py-3 px-4 md:px-6 rounded-full mb-4 md:mb-6 hover:bg-[#f5f5f5] transition w-full flex items-center justify-center gap-2 text-sm md:text-base"
+        >
+          <span>✏️</span>
+          Edit Profile
+        </button>
+      )}
 
       {/* Back to Home Button */}
       <Link

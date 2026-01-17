@@ -1,17 +1,59 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import DashboardNavbar from "@/components/dashboard/navbar"
 import { ProfileCard } from "@/components/profile/profile-card"
 
 export default function NotificationsPage() {
+  const router = useRouter()
   const [generalNotifications, setGeneralNotifications] = useState(true)
   const [emailNotifications, setEmailNotifications] = useState(true)
   const [consultationResults, setConsultationResults] = useState(true)
   const [newArticles, setNewArticles] = useState(true)
+  const [initialState, setInitialState] = useState({
+    generalNotifications: true,
+    emailNotifications: true,
+    consultationResults: true,
+    newArticles: true,
+  })
+  const [hasChanges, setHasChanges] = useState(false)
+
+  useEffect(() => {
+    const currentState = {
+      generalNotifications,
+      emailNotifications,
+      consultationResults,
+      newArticles,
+    }
+    const changed = JSON.stringify(currentState) !== JSON.stringify(initialState)
+    setHasChanges(changed)
+  }, [generalNotifications, emailNotifications, consultationResults, newArticles, initialState])
+
+  const handleCancel = () => {
+    router.push("/profile")
+  }
+
+  const handleSaveChanges = async () => {
+    // Simpan perubahan ke database/localStorage jika ada
+    if (hasChanges) {
+      // Implementasi penyimpanan data di sini
+      // Contoh: simpan ke localStorage
+      localStorage.setItem(
+        "notificationSettings",
+        JSON.stringify({
+          generalNotifications,
+          emailNotifications,
+          consultationResults,
+          newArticles,
+        })
+      )
+    }
+    router.push("/profile")
+  }
 
   return (
-    <div className="min-h-screen bg-[#1a2e4a]">
+    <div className="min-h-screen flex flex-col bg-blue-100">
       <DashboardNavbar />
 
       <div className="max-w-6xl mx-auto px-4 md:px-8 py-12">
@@ -19,12 +61,12 @@ export default function NotificationsPage() {
           {/* Sidebar */}
           <div className="md:col-span-1">
             <ProfileCard
-              name="RPL"
+              name="Salsabila Adelia Putrie"
               birthDate="December, 7, 2000"
-              location="Singapore, Indonesia"
-              email="bismillahrpla@gmail.com"
-              phone="+62 8765432%"
-              socialHandle="rpl_kelompokce"
+              location="Jakarta, Indonesia"
+              email="salsabila.adelia@gmail.com"
+              phone="+62 8765432109"
+              socialHandle="salsaadl"
               imageUrl="/images/adel.png"
             />
           </div>
@@ -82,10 +124,16 @@ export default function NotificationsPage() {
 
               {/* Buttons */}
               <div className="flex gap-4 justify-end">
-                <button className="bg-[#e8c9d5] text-gray-900 font-bold py-3 px-8 rounded-full hover:bg-[#ddb5c4] transition">
+                <button 
+                  onClick={handleCancel}
+                  className="bg-[#e8c9d5] text-gray-900 font-bold py-3 px-8 rounded-full hover:bg-[#ddb5c4] transition"
+                >
                   Cancel
                 </button>
-                <button className="bg-[#d8a9ba] text-gray-900 font-bold py-3 px-8 rounded-full hover:bg-[#c9949f] transition">
+                <button 
+                  onClick={handleSaveChanges}
+                  className="bg-[#d8a9ba] text-gray-900 font-bold py-3 px-8 rounded-full hover:bg-[#c9949f] transition"
+                >
                   Save Changes
                 </button>
               </div>

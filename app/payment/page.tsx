@@ -15,19 +15,19 @@ export default function PaymentPage() {
   const psychologists = [
     {
       id: 1,
-      name: "Dr. Miftahul Jannah, M.Psi., Psikolog",
+      name: "dr. Miftahul Jannah, M.Psi., Psikolog",
       university: "Universitas Paramadina - Cipayung",
       consultationFee: "Rp 150,000 per session"
     },
     {
       id: 2,
-      name: "Dr. Nadia Wulandari, M.Psi., Psikolog",
+      name: "dr. Nadia Wulandari, M.Psi., Psikolog",
       university: "Universitas Indonesia - Jakarta",
       consultationFee: "Rp 180,000 per session"
     },
     {
       id: 3,
-      name: "Dr. Dian, M.Psi., Psikolog",
+      name: "dr. Dian, M.Psi., Psikolog",
       university: "Universitas Trisakti - Grogol",
       consultationFee: "Rp 130,000 per session"
     }
@@ -179,22 +179,6 @@ export default function PaymentPage() {
               <span className="text-gray-600">Session Fee</span>
               <span className="font-bold text-xl text-[#1a2e4a]">{psychologist.consultationFee}</span>
             </div>
-          </div>
-        </div>
-
-        {/* Payment Methods - Placeholder */}
-        <div className="bg-white rounded-2xl p-8 shadow-xl mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Payment Method</h2>
-
-          <div className="text-center py-12">
-            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Payment System Coming Soon</h3>
-            <p className="text-gray-600">This is a placeholder for the payment integration.</p>
-            <p className="text-gray-600 mt-2">Available payment methods will be displayed here.</p>
           </div>
         </div>
 

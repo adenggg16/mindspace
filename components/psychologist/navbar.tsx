@@ -119,7 +119,7 @@ export default function PsychologistNavbar() {
             {isProfileOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white text-gray-900 rounded-lg shadow-xl overflow-hidden z-50">
                 <div className="px-4 py-3 border-b border-gray-200">
-                  <p className="font-semibold">Dr. Miftahul Jannah, M.Psi.</p>
+                  <p className="font-semibold">dr. Miftahul Jannah, M.Psi.</p>
                   <p className="text-sm text-gray-500">Clinical Psychologist</p>
                 </div>
                 <Link

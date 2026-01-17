@@ -9,7 +9,7 @@ import { ProfileCard } from "@/components/profile/profile-card"
 
 export default function SecuritySettingsPage() {
   const [formData, setFormData] = useState({
-    email: "bismillahrpla@gmail.com",
+    email: "salsabila.adelia@gmail.com",
     currentPassword: "",
     newPassword: "",
     confirmPassword: "",
@@ -43,12 +43,12 @@ export default function SecuritySettingsPage() {
           {/* Sidebar */}
           <div className="md:col-span-1">
             <ProfileCard
-              name="RPL"
+              name="Salsabila Adelia Putrie"
               birthDate="December, 7, 2000"
-              location="Singapore, Indonesia"
-              email="bismillahrpla@gmail.com"
-              phone="+62 8765432%"
-              socialHandle="rpl_kelompokce"
+              location="Jakarta, Indonesia"
+              email="salsabila.adelia@gmail.com"
+              phone="+62 8765432109"
+              socialHandle="salsaadl"
               imageUrl="/images/adel.png"
             />
           </div>

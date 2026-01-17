@@ -8,18 +8,18 @@ export default function CounselingPage() {
   const psychologists = [
     {
       id: 1,
-      name: "Dr. Miftahul Jannah, M.Psi., Psikolog",
-      university: "Universitas Paramadina - Cipayung",
+      name: "dr. Miftahul Jannah, M.Psi., Psikolog",
+      university: "Graduated from Paramadina University - Cipayung",
     },
     {
       id: 2,
-      name: "Dr. Nadia Wulandari, M.Psi., Psikolog",
-      university: "Universitas Indonesia - Jakarta",
+      name: "dr. Nadia Wulandari, M.Psi., Psikolog",
+      university: "Graduated from Universitas Indonesia - Jakarta",
     },
     {
       id: 3,
-      name: "Dr. Dian, M.Psi.,Psikolog",
-      university: "Universitas Trisakti - Grogol",
+      name: "dr. Dian, M.Psi.,Psikolog",
+      university: "Graduated from Trisakti University - Grogol",
     },
   ]
 
