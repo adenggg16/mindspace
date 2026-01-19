@@ -1,14 +1,15 @@
 "use client"
 
 import { useState } from "react"
-import { Mail, Lock, User, Phone } from "lucide-react"
+import { Mail, Lock, Phone } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { auth, db } from "@/lib/firebase" // Import auth dan db
+import { auth, db } from "@/lib/firebase" 
 import { createUserWithEmailAndPassword } from "firebase/auth"
-import { doc, setDoc } from "firebase/firestore" // Untuk simpan data profil
+import { doc, setDoc } from "firebase/firestore" 
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import Image from "next/image"
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("")
@@ -16,169 +17,89 @@ export default function SignUpPage() {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
   const [role, setRole] = useState("Student")
+  const router = useRouter()
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault()
-    
-    if (password !== confirmPassword) {
-      alert("Password tidak cocok!")
-      return
-    }
-
+    if (password !== confirmPassword) { alert("Password tidak cocok!"); return; }
     setIsLoading(true)
     try {
-      // 1. Buat User di Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(auth, email, password)
       const user = userCredential.user
-
-      // 2. Simpan Data Profil ke Firestore (Database)
-      // Kita simpan Nama default dan Tag spesialisasi sesuai desain Figma kamu
-      await setDoc(doc(db, "users", user.uid), {
-  fullName: "User Baru MindSpace",
-  email: email,
-  phoneNumber: phone,
-  role: role, // Menggunakan state role (Student/Psikolog)
-  specialization: role === "Psikolog" ? ["Anxiety", "Depression"] : [], 
-  createdAt: new Date().toISOString()
-})
-
-      alert("Akun berhasil dibuat! Mengalihkan ke Login...")
+      const targetCollection = role === "Psikolog" ? "psychologists" : "users"
+      await setDoc(doc(db, targetCollection, user.uid), {
+        fullName: "User Baru MindSpace",
+        email: email,
+        phoneNumber: phone,
+        role: role, 
+        createdAt: new Date().toISOString()
+      })
       router.push("/login")
-    } catch (error: any) {
-      alert("Gagal mendaftar: " + error.message)
-    } finally {
-      setIsLoading(false)
-    }
+    } catch (error: any) { alert("Gagal mendaftar!") } finally { setIsLoading(false) }
   }
 
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-[#e5e7eb] p-4">
-      {/* Background Gelombang Navy */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1000 1000" preserveAspectRatio="none">
-          <path
-            d="M 1000 0 L 600 0 Q 450 150, 480 350 Q 510 550, 400 750 Q 300 900, 200 1000 L 1000 1000 Z"
-            fill="#0f172a" 
-          />
+          <path d="M 1000 0 L 600 0 Q 450 150, 480 350 Q 510 550, 400 750 Q 300 900, 200 1000 L 1000 1000 Z" fill="#0f172a" />
         </svg>
       </div>
 
       <div className="relative z-10 w-full max-w-md px-4 md:px-6">
         <div className="bg-white/90 backdrop-blur-sm p-6 md:p-8 rounded-xl md:rounded-2xl shadow-2xl border border-gray-200 relative">
           
-          {/* Logo MindSpace */}
-          <div className="absolute -top-10 md:-top-12 left-4 md:left-0 text-[#1e293b] font-bold text-xl md:text-2xl flex items-center gap-1">
-            <span className="text-red-500">●</span> Mind<span className="text-red-400">Space</span>
+          {/* Logo menggantikan Ikon Pink */}
+          <div className="flex justify-center mb-4 mt-2">
+            <Image 
+              src="/images/logo.png" 
+              alt="MindSpace Logo" 
+              width={150} 
+              height={50} 
+              className="object-contain"
+            />
           </div>
 
-          {/* Avatar Ikon Profil Pink */}
-          <div className="flex justify-center -mt-14 md:-mt-16 mb-4">
-            <div className="bg-[#fbcfe8] p-3 md:p-4 rounded-full border-3 md:border-4 border-white shadow-lg">
-              <User size={40} className="md:w-12 md:h-12 text-[#1e293b]" />
-            </div>
+          <div className="flex justify-center gap-4 py-2 mb-2">
+            <label className="flex items-center gap-2 cursor-pointer group">
+              <input type="radio" name="role" value="Student" checked={role === "Student"} onChange={(e) => setRole(e.target.value)} className="w-4 h-4 accent-black" />
+              <span className={`text-xs font-bold ${role === "Student" ? "text-black" : "text-gray-400"}`}>STUDENT</span>
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer group">
+              <input type="radio" name="role" value="Psikolog" checked={role === "Psikolog"} onChange={(e) => setRole(e.target.value)} className="w-4 h-4 accent-black" />
+              <span className={`text-xs font-bold ${role === "Psikolog" ? "text-black" : "text-gray-400"}`}>PSIKOLOG</span>
+            </label>
           </div>
-{/* Pilihan Role */}
-<div className="flex justify-center gap-4 py-2">
-  <label className="flex items-center gap-2 cursor-pointer group">
-    <input 
-      type="radio" 
-      name="role" 
-      value="Student"
-      checked={role === "Student"}
-      onChange={(e) => setRole(e.target.value)}
-      className="w-4 h-4 accent-black"
-    />
-    <span className={`text-xs font-bold ${role === "Student" ? "text-black" : "text-gray-400"}`}>STUDENT</span>
-  </label>
-  
-  <label className="flex items-center gap-2 cursor-pointer group">
-    <input 
-      type="radio" 
-      name="role" 
-      value="Psikolog"
-      checked={role === "Psikolog"}
-      onChange={(e) => setRole(e.target.value)}
-      className="w-4 h-4 accent-black"
-    />
-    <span className={`text-xs font-bold ${role === "Psikolog" ? "text-black" : "text-gray-400"}`}>PSIKOLOG</span>
-  </label>
-</div>
-          <h2 className="text-3xl md:text-4xl font-black text-center mb-6 md:mb-8 tracking-tighter text-[#1e293b]">
-            SIGN UP
-          </h2>
+
+          <h2 className="text-3xl md:text-4xl font-black text-center mb-6 md:mb-8 tracking-tighter text-[#1e293b]">SIGN UP</h2>
 
           <form onSubmit={handleSignUp} className="space-y-3 md:space-y-4">
-            {/* Input E-mail */}
             <div className="relative">
-              <Input
-                type="email"
-                placeholder="E-mail"
-                className="pr-10 border-2 border-black rounded-none h-10 md:h-11 text-sm md:text-base focus-visible:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]"
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+              <Input type="email" placeholder="E-mail" className="pr-10 border-2 border-black rounded-none h-10 md:h-11 text-sm md:text-base focus-visible:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]" onChange={(e) => setEmail(e.target.value)} required />
               <Mail className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
             </div>
-
-            {/* Input Phone Number */}
             <div className="relative">
-              <Input
-                type="tel"
-                placeholder="Phone Number"
-                className="pr-10 border-2 border-black rounded-none h-10 md:h-11 text-sm md:text-base focus-visible:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]"
-                onChange={(e) => setPhone(e.target.value)}
-                required
-              />
+              <Input type="tel" placeholder="Phone Number" className="pr-10 border-2 border-black rounded-none h-10 md:h-11 text-sm md:text-base focus-visible:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]" onChange={(e) => setPhone(e.target.value)} required />
               <Phone className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
             </div>
-
-            {/* Input Password */}
             <div className="relative">
-              <Input
-                type="password"
-                placeholder="Password"
-                className="pr-10 border-2 border-black rounded-none h-10 md:h-11 text-sm md:text-base focus-visible:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]"
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <Input type="password" placeholder="Password" className="pr-10 border-2 border-black rounded-none h-10 md:h-11 text-sm md:text-base focus-visible:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]" onChange={(e) => setPassword(e.target.value)} required />
               <Lock className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
             </div>
-
-            {/* Input Confirm Password */}
             <div className="relative">
-              <Input
-                type="password"
-                placeholder="Confirm Password"
-                className="pr-10 border-2 border-black rounded-none h-10 md:h-11 text-sm md:text-base focus-visible:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]"
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
+              <Input type="password" placeholder="Confirm Password" className="pr-10 border-2 border-black rounded-none h-10 md:h-11 text-sm md:text-base focus-visible:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]" onChange={(e) => setConfirmPassword(e.target.value)} required />
               <Lock className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
             </div>
-
             <div className="text-[10px] text-right text-gray-600 italic">
-              Already have an account?{" "}
-              <Link href="/login" className="font-bold text-black underline">
-                Login
-              </Link>
+              Already have an account? <Link href="/login" className="font-bold text-black underline">Login</Link>
             </div>
-
             <div className="flex justify-center pt-2">
-              <Button 
-                type="submit" 
-                disabled={isLoading}
-                className="w-28 md:w-32 bg-white text-xs md:text-sm text-black border-2 border-black hover:bg-gray-100 font-bold rounded-full shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-transform active:translate-y-1 active:shadow-none"
-              >
+              <Button type="submit" disabled={isLoading} className="w-28 md:w-32 bg-white text-xs md:text-sm text-black border-2 border-black hover:bg-gray-100 font-bold rounded-full shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-transform active:translate-y-1 active:shadow-none">
                 {isLoading ? "LOADING..." : "SIGN UP"}
               </Button>
             </div>
           </form>
-
-          <p className="text-[8px] text-center mt-4 md:mt-6 text-gray-500">
-            [ I agree to the Terms & Conditions and Privacy Policy ]
-          </p>
         </div>
       </div>
     </div>

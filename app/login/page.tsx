@@ -5,10 +5,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
 import { signInWithEmailAndPassword } from "firebase/auth"
-import { doc, getDoc } from "firebase/firestore" // Import untuk akses database
-import { auth, db } from "@/lib/firebase" // Import auth dan db dari config kamu
+import { doc, getDoc } from "firebase/firestore" 
+import { auth, db } from "@/lib/firebase" 
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import Image from "next/image"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -21,33 +22,44 @@ export default function LoginPage() {
     setIsLoading(true)
 
     try {
-      // 1. Proses Login ke Firebase Auth
       const userCredential = await signInWithEmailAndPassword(auth, email, password)
       const user = userCredential.user
 
-      // 2. Ambil data role dari Firestore Database berdasarkan UID user yang login
-      const userDoc = await getDoc(doc(db, "users", user.uid))
+      // 1. Cek di koleksi 'psychologists'
+      let userDoc = await getDoc(doc(db, "psychologists", user.uid))
       
       if (userDoc.exists()) {
         const userData = userDoc.data()
-        const role = userData.role // Mengambil field 'role' (Psikolog/Student)
-
-        alert(`Login berhasil! Selamat datang, ${role} 🎉`)
-
-        // 3. Logika Redirect: Cek role dan arahkan ke dashboard yang tepat
-        if (role === "Psikolog") {
-          router.push("/psychologist")
-        } else {
-          router.push("/dashboard")
-        }
-      } else {
-        // Jika user ada di Auth tapi profilnya belum dibuat di Firestore
-        alert("Data profil tidak ditemukan. Mengalihkan ke dashboard umum.")
-        router.push("/dashboard")
+        alert(`Login Berhasil! Selamat datang Psikolog, ${userData.fullName} 🎉`)
+        router.push("/psychologist")
+        return 
       }
+
+      // 2. Cek di koleksi 'users'
+      userDoc = await getDoc(doc(db, "users", user.uid))
+      
+      if (userDoc.exists()) {
+        const userData = userDoc.data()
+        alert(`Login Berhasil! Selamat datang, ${userData.fullName} 🎉`)
+        router.push("/dashboard")
+        return
+      }
+
+      // 3. TAMBAHAN: Cek di koleksi 'admin'
+      userDoc = await getDoc(doc(db, "admin", user.uid))
+      
+      if (userDoc.exists()) {
+        const userData = userDoc.data()
+        alert(`Login Berhasil! Selamat datang Admin, ${userData.fullName} 🛡️`)
+        router.push("/admin/dashboard")
+        return
+      }
+
+      alert("Data profil tidak ditemukan. Silakan hubungi admin.")
+      
     } catch (error: any) {
       console.error("Login error:", error)
-      alert("Email atau password salah! Pastikan akun sudah terdaftar.")
+      alert("Email atau password salah!")
     } finally {
       setIsLoading(false)
     }
@@ -68,19 +80,16 @@ export default function LoginPage() {
       <div className="relative z-10 w-full max-w-[420px] px-4 md:px-6">
         <div className="bg-white p-6 md:p-10 rounded-2xl md:rounded-[25px] shadow-2xl relative border border-gray-100">
           
-          {/* Logo MindSpace */}
-          <div className="absolute top-4 md:top-6 left-6 md:left-8 flex items-center gap-1">
-            <span className="text-[#F87171] text-lg md:text-xl leading-none">●</span>
-            <span className="text-lg md:text-xl font-bold tracking-tighter text-[#1e293b]">
-              Mind<span className="text-[#F87171]">Space</span>
-            </span>
-          </div>
-
-          {/* Ikon Profil Lingkaran Pink */}
-          <div className="flex justify-center mb-6 mt-6 md:mt-8">
-            <div className="w-16 md:w-20 h-16 md:h-20 bg-[#FBCFE8] rounded-full border-2 md:border-4 border-white shadow-md flex items-center justify-center">
-                <div className="w-8 md:w-10 h-8 md:h-10 border-2 md:border-4 border-[#1E293B] opacity-10 rotate-45"></div>
-            </div>
+          {/* Logo Bagian Atas */}
+          <div className="flex justify-center mb-6">
+            <Image 
+              src="/images/logo.png" 
+              alt="MindSpace Logo"
+              width={150} 
+              height={50}
+              priority
+              className="object-contain"
+            />
           </div>
 
           <h2 className="text-3xl md:text-[42px] font-[900] text-center mb-8 md:mb-10 tracking-tighter text-[#1e293b] leading-none">
@@ -92,22 +101,22 @@ export default function LoginPage() {
               <Input
                 type="email"
                 placeholder="E-mail"
-                className="pr-10 md:pr-12 border-2 border-black rounded-none h-12 md:h-[50px] font-medium text-sm md:text-base focus-visible:ring-0 placeholder:text-gray-400"
+                className="pr-10 border-2 border-black rounded-none h-12 text-sm focus-visible:ring-0"
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
-              <Mail className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 text-black" size={18} />
+              <Mail className="absolute right-3 top-1/2 -translate-y-1/2 text-black" size={18} />
             </div>
 
             <div className="relative">
               <Input
                 type="password"
                 placeholder="Password"
-                className="pr-10 md:pr-12 border-2 border-black rounded-none h-12 md:h-[50px] font-medium text-sm md:text-base focus-visible:ring-0 placeholder:text-gray-400"
+                className="pr-10 border-2 border-black rounded-none h-12 text-sm focus-visible:ring-0"
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-              <Lock className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 text-black" size={18} />
+              <Lock className="absolute right-3 top-1/2 -translate-y-1/2 text-black" size={18} />
             </div>
 
             <div className="text-[10px] md:text-xs text-gray-500 italic">
@@ -121,7 +130,7 @@ export default function LoginPage() {
               <Button 
                 type="submit" 
                 disabled={isLoading}
-                className="px-8 md:px-12 py-2 bg-white text-black border-2 md:border-[2.5px] border-black hover:bg-gray-100 font-[900] rounded-full shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-y-1 active:shadow-none text-sm md:text-base disabled:opacity-50"
+                className="px-12 py-2 bg-white text-black border-2 border-black hover:bg-gray-100 font-[900] rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-y-1 active:shadow-none"
               >
                 {isLoading ? "LOADING..." : "LOGIN"}
               </Button>

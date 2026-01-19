@@ -5,6 +5,10 @@ import DashboardNavbar from "@/components/dashboard/navbar"
 import { ProfileCard } from "@/components/profile/profile-card"
 import { SettingsSection } from "@/components/profile/settings-section"
 import { ActivitiesSection } from "@/components/profile/activities-section"
+// Import Firebase
+import { auth, db } from "@/lib/firebase"
+import { doc, getDoc, updateDoc } from "firebase/firestore"
+import { onAuthStateChanged } from "firebase/auth"
 
 interface ProfileData {
   name: string
@@ -14,15 +18,16 @@ interface ProfileData {
   phone: string
   socialHandle: string
   image: string
+  role?: string // Penting untuk identifikasi koleksi
 }
 
 const defaultProfileData: ProfileData = {
-  name: "Salsabila Adelia Putrie",
-  birthDate: "December, 7, 2000",
-  location: "Jakarta, Indonesia",
-  email: "salsabila.adelia@gmail.com",
-  phone: "+62 876543296",
-  socialHandle: "salsaadl",
+  name: "Loading...",
+  birthDate: "",
+  location: "",
+  email: "",
+  phone: "",
+  socialHandle: "",
   image: "/images/adel.png",
 }
 
@@ -30,14 +35,49 @@ export default function ProfilePage() {
   const [profileData, setProfileData] = useState<ProfileData>(defaultProfileData)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [formData, setFormData] = useState<ProfileData>(defaultProfileData)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    const savedProfile = localStorage.getItem("profileData")
-    if (savedProfile) {
-      const data = JSON.parse(savedProfile)
-      setProfileData(data)
-      setFormData(data)
-    }
+    // Memantau status login user
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          // 1. Cek di koleksi 'psychologists' dulu
+          let docRef = doc(db, "psychologists", user.uid)
+          let docSnap = await getDoc(docRef)
+
+          // 2. Jika tidak ada di 'psychologists', cek di 'users'
+          if (!docSnap.exists()) {
+            docRef = doc(db, "users", user.uid)
+            docSnap = await getDoc(docRef)
+          }
+
+          if (docSnap.exists()) {
+            const data = docSnap.data()
+            const fetchedData: ProfileData = {
+              name: data.fullName || "",
+              birthDate: data.birthDate || "",
+              location: data.location || "",
+              email: data.email || user.email || "",
+              phone: data.phoneNumber || "",
+              socialHandle: data.socialHandle || "",
+              image: data.image || "/images/adel.png",
+              role: data.role
+            }
+            setProfileData(fetchedData)
+            setFormData(fetchedData)
+          }
+        } catch (error) {
+          console.error("Error fetching profile from Firestore:", error)
+        }
+      } else {
+        // Jika tidak login, arahkan ke login
+        window.location.href = "/login"
+      }
+      setIsLoading(false)
+    })
+
+    return () => unsubscribe()
   }, [])
 
   const handleEditClick = () => {
@@ -57,10 +97,36 @@ export default function ProfilePage() {
     }))
   }
 
-  const handleSaveProfile = () => {
-    setProfileData(formData)
-    localStorage.setItem("profileData", JSON.stringify(formData))
-    setIsEditModalOpen(false)
+  const handleSaveProfile = async () => {
+    const user = auth.currentUser
+    if (!user) return
+
+    try {
+      // Tentukan koleksi berdasarkan role yang ada di data profile
+      const targetCollection = profileData.role === "Psikolog" ? "psychologists" : "users"
+      const docRef = doc(db, targetCollection, user.uid)
+
+      // Simpan perubahan ke Firebase Firestore
+      await updateDoc(docRef, {
+        fullName: formData.name,
+        birthDate: formData.birthDate,
+        location: formData.location,
+        phoneNumber: formData.phone,
+        socialHandle: formData.socialHandle,
+        // email tidak diupdate lewat sini karena biasanya lewat Firebase Auth
+      })
+
+      setProfileData(formData)
+      setIsEditModalOpen(false)
+      alert("Profil berhasil diperbarui!")
+    } catch (error) {
+      console.error("Error updating profile:", error)
+      alert("Gagal memperbarui profil.")
+    }
+  }
+
+  if (isLoading) {
+    return <div className="min-h-screen flex items-center justify-center bg-blue-100">Loading Profile...</div>
   }
 
   return (
@@ -87,16 +153,14 @@ export default function ProfilePage() {
           {/* Right Content - Main Profile Section */}
           <div className="lg:col-span-3">
             <div className="bg-white rounded-2xl md:rounded-3xl p-6 md:p-12 shadow-lg">
-              {/* Decorative header line */}
               <div className="h-2 md:h-3 bg-[#d8a9ba] rounded-t-2xl md:rounded-t-3xl -mx-6 md:-mx-12 -mt-6 md:-mt-12 mb-6 md:mb-8" />
 
-              <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-3 md:mb-4">Welcome to your Profile!</h1>
+              <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-3 md:mb-4">
+                Welcome back, {profileData.name.split(' ')[0]}!
+              </h1>
               <p className="text-gray-600 text-base md:text-lg mb-8 md:mb-12">Manage your personal information and settings here.</p>
 
-              {/* Settings Section */}
               <SettingsSection />
-
-              {/* Recent Activities Section */}
               <ActivitiesSection />
             </div>
           </div>
@@ -147,15 +211,15 @@ export default function ProfilePage() {
                 />
               </div>
 
-              {/* Email */}
+              {/* Email (Biasanya Read Only untuk Keamanan Auth) */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Email</label>
                 <input
                   type="email"
                   name="email"
                   value={formData.email}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d8a9ba]"
+                  disabled
+                  className="w-full px-4 py-2 border border-gray-200 bg-gray-50 text-gray-500 rounded-lg cursor-not-allowed"
                 />
               </div>
 

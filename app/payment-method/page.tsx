@@ -3,6 +3,10 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react"
+// --- TAMBAHAN LOGIKA FIREBASE ---
+import { db, auth } from "@/lib/firebase"
+import { collection, addDoc, serverTimestamp } from "firebase/firestore"
+// --------------------------------
 
 export default function PaymentMethodPage() {
   const [psychologistId, setPsychologistId] = useState<string | null>(null)
@@ -14,7 +18,6 @@ export default function PaymentMethodPage() {
   const [showPaymentModal, setShowPaymentModal] = useState(false)
   const [paymentComplete, setPaymentComplete] = useState(false)
 
-  // Psychologist data
   const psychologists = [
     {
       id: 1,
@@ -45,19 +48,9 @@ export default function PaymentMethodPage() {
     { id: "bni", name: "BNI" }
   ]
 
-  const paymentDetails = {
-    qris: { type: "qr", label: "Silahkan scan untuk melanjutkan pembayaran" },
-    gopay: { type: "phone", number: "+62 812-3456-7890", label: "Nomor GoPay" },
-    mandiri: { type: "account", number: "1234567890", label: "Nomor Rekening Mandiri" },
-    dana: { type: "account", number: "0987654321", label: "Nomor Rekening DANA" },
-    bca: { type: "account", number: "1122334455", label: "Nomor Rekening BCA" },
-    bni: { type: "account", number: "5566778899", label: "Nomor Rekening BNI" }
-  }
-
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Get query parameters from URL
     const urlParams = new URLSearchParams(window.location.search)
     const psychId = urlParams.get('psychologist')
     const dateParam = urlParams.get('date')
@@ -75,6 +68,55 @@ export default function PaymentMethodPage() {
     }
     setIsLoading(false)
   }, [])
+
+  // --- FUNGSI BARU UNTUK SIMPAN KE FIREBASE ---
+  const handleConfirmAndSave = async () => {
+    const user = auth.currentUser;
+    if (!user) {
+      alert("Please login first!");
+      return;
+    }
+
+    try {
+      // 1. Simpan ke Firestore agar Admin bisa melihat
+      await addDoc(collection(db, "payments"), {
+        userId: user.uid,
+        studentName: "Salsabila Adelia Putrie", // Sebaiknya ambil dari data profil
+        amount: fee,
+        description: `Consultation with ${psychologist.name}`,
+        date: new Date(date!).toLocaleDateString('en-US'),
+        time: time,
+        status: "Confirmed",
+        createdAt: serverTimestamp(),
+      });
+
+      // 2. Simpan ke LocalStorage untuk history (Logika lama tetap dipertahankan)
+      const bookingId = Date.now().toString()
+      const consultationBooking = {
+        id: bookingId,
+        psychologistName: psychologist.name,
+        psychologistUniversity: psychologist.university,
+        bookingDate: new Date().toISOString(),
+        consultationDate: date,
+        consultationTime: time,
+        consultationFee: fee,
+        status: "upcoming",
+        bookedAt: new Date().toISOString(),
+      }
+
+      const existingBookings = localStorage.getItem("consultationBookings")
+      let bookingsArray = existingBookings ? JSON.parse(existingBookings) : []
+      bookingsArray.unshift(consultationBooking)
+      localStorage.setItem("consultationBookings", JSON.stringify(bookingsArray))
+
+      // 3. Pindah ke layar sukses
+      setShowPaymentModal(false)
+      setPaymentComplete(true)
+    } catch (error) {
+      console.error("Firebase Error:", error);
+      alert("Gagal memproses pembayaran ke database.");
+    }
+  }
 
   if (isLoading) {
     return (
@@ -112,7 +154,6 @@ export default function PaymentMethodPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-blue-100">
-      {/* Header Navigation */}
       <nav className="bg-[#1a2e4a] text-white py-4 md:py-6 px-4 md:px-8 shadow-lg">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2 md:gap-3">
@@ -126,25 +167,15 @@ export default function PaymentMethodPage() {
           </div>
 
           <div className="hidden md:flex gap-8">
-            <Link href="/dashboard" className="hover:text-[#e17b9e] transition text-sm">
-              Home
-            </Link>
-            <Link href="/articles" className="hover:text-[#e17b9e] transition text-sm">
-              Articles
-            </Link>
-            <Link href="/counseling" className="hover:text-[#e17b9e] transition text-sm">
-              Counseling
-            </Link>
-            <Link href="/profile" className="hover:text-[#e17b9e] transition text-sm">
-              Profile
-            </Link>
+            <Link href="/dashboard" className="hover:text-[#e17b9e] transition text-sm">Home</Link>
+            <Link href="/articles" className="hover:text-[#e17b9e] transition text-sm">Articles</Link>
+            <Link href="/counseling" className="hover:text-[#e17b9e] transition text-sm">Counseling</Link>
+            <Link href="/profile" className="hover:text-[#e17b9e] transition text-sm">Profile</Link>
           </div>
         </div>
       </nav>
 
-      {/* Main Content */}
       <div className="max-w-4xl mx-auto px-4 md:px-8 py-8 md:py-12 w-full">
-        {/* Back Button */}
         <div className="mb-6">
           <Link href={`/payment?psychologist=${psychologistId}&date=${date}&time=${time}&fee=${fee}`}>
             <Button variant="outline" className="border-[#1a2e4a] text-[#1a2e4a] hover:bg-[#1a2e4a] hover:text-white">
@@ -153,38 +184,19 @@ export default function PaymentMethodPage() {
           </Link>
         </div>
 
-        {/* Payment Method Selection */}
         <div className="bg-white rounded-2xl p-8 shadow-xl">
           <h1 className="text-3xl font-bold text-gray-900 mb-8">Select Payment Method</h1>
 
-          {/* Booking Summary Card */}
           <div className="bg-gradient-to-r from-blue-100 to-purple-100 rounded-2xl p-6 mb-8 text-center">
             <div className="w-16 h-16 bg-white rounded-full mx-auto mb-4 flex items-center justify-center shadow-md">
               <span className="text-2xl">👨‍⚕️</span>
             </div>
             <h3 className="font-bold text-lg text-gray-900 mb-2">{psychologist.name}</h3>
             <div className="flex items-center justify-center gap-2 text-gray-700 mb-2">
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-2.16-2.66c-.44-.53-1.25-.58-1.78-.14-.53.44-.58 1.25-.14 1.78l3 3.67c.25.31.61.5 1 .5s.75-.19 1-.5l4-5.07c.44-.53.39-1.34-.14-1.78-.53-.44-1.34-.39-1.78.14z" />
-              </svg>
-              <span className="text-sm">
-                {new Date(date).toLocaleDateString('en-US', {
-                  weekday: 'long',
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
-              </span>
+              <span className="text-sm">{new Date(date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
             </div>
             <div className="flex items-center justify-center gap-2 text-gray-700 mb-4">
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
-              </svg>
-              <span className="text-sm">
-                {time === "09:00" && "9:00 AM (Morning)"}
-                {time === "14:00" && "2:00 PM (Afternoon)"}
-                {time === "19:00" && "7:00 PM (Evening)"}
-              </span>
+              <span className="text-sm">{time}</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-700 font-semibold">Total Amount:</span>
@@ -192,9 +204,7 @@ export default function PaymentMethodPage() {
             </div>
           </div>
 
-          {/* Payment Methods Grid */}
           <h2 className="text-xl font-bold text-gray-900 mb-6">Select Payment Method</h2>
-          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
             {paymentMethods.map((method) => (
               <label key={method.id} className="flex items-center p-6 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-[#1a2e4a] hover:bg-blue-50 transition">
@@ -211,197 +221,43 @@ export default function PaymentMethodPage() {
             ))}
           </div>
 
-          {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4">
-            <Link href={`/payment?psychologist=${psychologistId}&date=${date}&time=${time}&fee=${fee}`} className="flex-1">
-              <Button variant="outline" className="w-full border-gray-300 text-gray-700 hover:bg-gray-50">
-                Back
-              </Button>
-            </Link>
-            <Button
-              onClick={handleSelectPaymentMethod}
-              className="flex-1 bg-[#1a2e4a] hover:bg-[#0f1f31] text-white font-semibold py-3 rounded-lg"
-            >
+            <Button onClick={handleSelectPaymentMethod} className="flex-1 bg-[#1a2e4a] hover:bg-[#0f1f31] text-white font-semibold py-3 rounded-lg">
               Confirm Payment
             </Button>
           </div>
         </div>
       </div>
 
-      {/* Payment Modal */}
       {showPaymentModal && !paymentComplete && (
         <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl">
-            {selectedPaymentMethod === "qris" ? (
-              // QRIS Payment Modal
-              <div className="text-center">
-                <div className="bg-gray-100 rounded-xl p-6 mb-6">
-                  <svg className="w-32 h-32 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 4v16m8-8H4" />
-                  </svg>
-                </div>
-                <div className="bg-blue-100 rounded-2xl p-4 mb-6 border-2 border-blue-300">
-                  <div className="bg-white rounded-lg p-4 inline-block">
-                    <svg className="w-48 h-48" viewBox="0 0 200 200" fill="black">
-                      {/* QR Code placeholder */}
-                      <rect x="20" y="20" width="160" height="160" fill="white" stroke="black" strokeWidth="2"/>
-                      <rect x="30" y="30" width="40" height="40" fill="black"/>
-                      <rect x="130" y="30" width="40" height="40" fill="black"/>
-                      <rect x="30" y="130" width="40" height="40" fill="black"/>
-                      {/* Pattern */}
-                      <rect x="80" y="80" width="20" height="20" fill="black"/>
-                      <rect x="60" y="100" width="10" height="10" fill="black"/>
-                      <rect x="110" y="100" width="10" height="10" fill="black"/>
-                      <rect x="100" y="60" width="10" height="10" fill="black"/>
-                    </svg>
-                  </div>
-                </div>
-                <h2 className="text-xl font-bold text-gray-900 mb-2">QRIS Payment</h2>
-                <p className="text-gray-600 mb-6">Please scan the QR code to proceed with payment.</p>
+            <div className="text-center">
+              <div className="bg-blue-100 rounded-2xl p-8 mb-6 text-5xl">💳</div>
+              <h2 className="text-xl font-bold text-gray-900 mb-6 uppercase">{selectedPaymentMethod}</h2>
+              <div className="bg-gray-100 rounded-xl p-6 mb-6">
+                <p className="text-gray-600 text-sm mb-3">Account Number</p>
+                <p className="text-2xl font-bold text-[#1a2e4a] mb-3">0987654321</p>
               </div>
-            ) : (
-              // Bank/GoPay Payment Modal
-              <div className="text-center">
-                <div className="bg-blue-100 rounded-2xl p-8 mb-6">
-                  <div className="text-5xl mb-4">
-                    {selectedPaymentMethod === "gopay" && "📱"}
-                    {selectedPaymentMethod === "mandiri" && "🏦"}
-                    {selectedPaymentMethod === "dana" && "💳"}
-                    {selectedPaymentMethod === "bca" && "🏦"}
-                    {selectedPaymentMethod === "bni" && "🏦"}
-                  </div>
-                </div>
-                <h2 className="text-xl font-bold text-gray-900 mb-6">
-                  {selectedPaymentMethod === "gopay" && "GoPay"}
-                  {selectedPaymentMethod === "mandiri" && "Mandiri"}
-                  {selectedPaymentMethod === "dana" && "DANA"}
-                  {selectedPaymentMethod === "bca" && "BCA"}
-                  {selectedPaymentMethod === "bni" && "BNI"}
-                </h2>
-                
-                <div className="bg-gray-100 rounded-xl p-6 mb-6">
-                  <p className="text-gray-600 text-sm mb-3">
-                    {selectedPaymentMethod === "gopay" && "GoPay Number"}
-                    {selectedPaymentMethod === "mandiri" && "Account Number"}
-                    {selectedPaymentMethod === "dana" && "Account Number"}
-                    {selectedPaymentMethod === "bca" && "Account Number"}
-                    {selectedPaymentMethod === "bni" && "Account Number"}
-                  </p>
-                  <p className="text-2xl font-bold text-[#1a2e4a] mb-3">
-                    {selectedPaymentMethod === "gopay" && "+62 812-3456-7890"}
-                    {selectedPaymentMethod === "mandiri" && "1234567890"}
-                    {selectedPaymentMethod === "dana" && "0987654321"}
-                    {selectedPaymentMethod === "bca" && "1122334455"}
-                    {selectedPaymentMethod === "bni" && "5566778899"}
-                  </p>
-                  <button 
-                    onClick={() => {
-                      const text = selectedPaymentMethod === "gopay" ? "+62 812-3456-7890" : 
-                                  selectedPaymentMethod === "mandiri" ? "1234567890" :
-                                  selectedPaymentMethod === "dana" ? "0987654321" :
-                                  selectedPaymentMethod === "bca" ? "1122334455" : "5566778899"
-                      navigator.clipboard.writeText(text)
-                      alert('Number copied!')
-                    }}
-                    className="text-sm text-[#1a2e4a] hover:text-[#0f1f31] font-semibold"
-                  >
-                    Copy Number
-                  </button>
-                </div>
+              <p className="text-gray-600 text-sm mb-6">Total Amount: <span className="font-bold text-[#1a2e4a] text-lg">{fee}</span></p>
 
-                <p className="text-gray-600 text-sm mb-6">Total Amount: <span className="font-bold text-[#1a2e4a] text-lg">{fee}</span></p>
-              </div>
-            )}
-
-            {/* Confirm Button */}
-            <button
-              onClick={() => {
-                // Save consultation booking to localStorage
-                const bookingId = Date.now().toString()
-                const consultationBooking = {
-                  id: bookingId,
-                  psychologistName: psychologist.name,
-                  psychologistUniversity: psychologist.university,
-                  bookingDate: new Date().toISOString(),
-                  consultationDate: date,
-                  consultationTime: time,
-                  consultationFee: fee,
-                  status: "upcoming",
-                  bookedAt: new Date().toISOString(),
-                }
-
-                // Get existing bookings
-                const existingBookings = localStorage.getItem("consultationBookings")
-                let bookingsArray = existingBookings ? JSON.parse(existingBookings) : []
-
-                // Add new booking
-                bookingsArray.unshift(consultationBooking)
-                localStorage.setItem("consultationBookings", JSON.stringify(bookingsArray))
-
-                setShowPaymentModal(false)
-                setPaymentComplete(true)
-              }}
-              className="w-full bg-[#1a2e4a] hover:bg-[#0f1f31] text-white font-bold py-3 rounded-lg transition"
-            >
-              Continue
-            </button>
-
-            {/* Cancel Button */}
-            <button
-              onClick={() => {
-                setShowPaymentModal(false)
-                setSelectedPaymentMethod(null)
-              }}
-              className="w-full mt-3 bg-gray-200 hover:bg-gray-300 text-gray-900 font-semibold py-2 rounded-lg transition"
-            >
-              Cancel
-            </button>
+              <button onClick={handleConfirmAndSave} className="w-full bg-[#1a2e4a] hover:bg-[#0f1f31] text-white font-bold py-3 rounded-lg transition">
+                Continue
+              </button>
+              <button onClick={() => setShowPaymentModal(false)} className="w-full mt-3 bg-gray-200 hover:bg-gray-300 text-gray-900 font-semibold py-2 rounded-lg transition">
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Payment Complete Modal */}
       {paymentComplete && (
         <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl text-center">
-            <div className="mb-6">
-              <div className="w-20 h-20 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-                <svg className="w-12 h-12 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-              </div>
-            </div>
+            <div className="w-20 h-20 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center text-green-600 text-3xl">✓</div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Payment Complete!</h2>
-            <p className="text-gray-600 mb-8">Thank you for your payment. Your booking has been confirmed.</p>
-
-            <div className="bg-blue-50 rounded-xl p-6 mb-6 text-left">
-              <h3 className="font-semibold text-gray-900 mb-4">Booking Details</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Psychologist:</span>
-                  <span className="font-semibold text-gray-900">{psychologist.name}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Date:</span>
-                  <span className="font-semibold text-gray-900">
-                    {new Date(date).toLocaleDateString('en-US')}
-                  </span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Time:</span>
-                  <span className="font-semibold text-gray-900">
-                    {time === "09:00" && "9:00 AM"}
-                    {time === "14:00" && "2:00 PM"}
-                    {time === "19:00" && "7:00 PM"}
-                  </span>
-                </div>
-                <div className="flex justify-between text-sm border-t pt-3">
-                  <span className="text-gray-600">Total Amount:</span>
-                  <span className="font-bold text-[#1a2e4a] text-lg">{fee}</span>
-                </div>
-              </div>
-            </div>
-
+            <p className="text-gray-600 mb-8">Thank you. Your booking has been confirmed.</p>
             <Link href="/dashboard" className="block">
               <Button className="w-full bg-[#1a2e4a] hover:bg-[#0f1f31] text-white font-bold py-3 rounded-lg">
                 Back to Dashboard

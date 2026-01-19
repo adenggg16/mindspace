@@ -1,22 +1,22 @@
 export interface ArticleDetail {
-  id: number
-  title: string
-  description: string
-  icon: string
+  id: string; 
+  title: string;
+  description: string;
+  icon: string;
   content: {
-    introduction: string
+    introduction: string;
     sections: {
-      title: string
-      content: string
-      points?: string[]
-    }[]
-    references: string[]
-  }
+      title: string;
+      content: string;
+      points?: string[];
+    }[];
+    references: string[];
+  };
 }
 
 export const articlesData: ArticleDetail[] = [
   {
-    id: 1,
+    id: "1",
     title: "Stress & Emotional Well-being",
     description: "Understanding how stress affects emotions and how to manage it in daily life.",
     icon: "stress.png",
@@ -43,7 +43,7 @@ export const articlesData: ArticleDetail[] = [
     }
   },
   {
-    id: 2,
+    id: "2",
     title: "Emotional Intelligence Skills",
     description: "Learn how emotional intelligence helps build healthier coping strategies.",
     icon: "emotionall.png",
@@ -70,7 +70,7 @@ export const articlesData: ArticleDetail[] = [
     }
   },
   {
-    id: 3,
+    id: "3",
     title: "Building Psychological Resilience",
     description: "Discover how to strengthen resilience during challenging life situations.",
     icon: "resilence.png",
@@ -97,7 +97,7 @@ export const articlesData: ArticleDetail[] = [
     }
   },
   {
-    id: 4,
+    id: "4",
     title: "Anxiety and Emotional Awareness",
     description: "Understanding anxiety and the importance of recognizing emotional signals.",
     icon: "anxiety.png",
@@ -124,7 +124,7 @@ export const articlesData: ArticleDetail[] = [
     }
   },
   {
-    id: 5,
+    id: "5",
     title: "Coping with Academic Stress",
     description: "Effective strategies to manage academic pressure and maintain mental balance.",
     icon: "academic.png",
@@ -151,7 +151,7 @@ export const articlesData: ArticleDetail[] = [
     }
   },
   {
-    id: 6,
+    id: "6",
     title: "The Role of Social Support in Mental Health",
     description: "How social connections contribute to emotional well-being.",
     icon: "social.png",
@@ -178,7 +178,7 @@ export const articlesData: ArticleDetail[] = [
     }
   },
   {
-    id: 7,
+    id: "7",
     title: "Mindfulness and Emotional Regulation",
     description: "Using mindfulness to improve emotional balance and awareness.",
     icon: "mindfulness.png",
@@ -205,7 +205,7 @@ export const articlesData: ArticleDetail[] = [
     }
   },
   {
-    id: 8,
+    id: "8",
     title: "Self-Care and Psychological Well-being",
     description: "The importance of daily self-care for maintaining mental health.",
     icon: "selfcare.png",
@@ -232,12 +232,12 @@ export const articlesData: ArticleDetail[] = [
     }
   },
   {
-    id: 9,
+    id: "9",
     title: "Sleep & Mental Well-being",
     description: "Understanding the relationship between sleep and emotional health.",
     icon: "sleep.png",
     content: {
-      introduction: "Sleep plays a vital role in maintaining mental and emotional well-being. Research shows that adequate sleep supports emotional regulation, cognitive functioning, and overall psychological balance. Insufficient or poor-quality sleep may increase emotional sensitivity and stress levels.",
+      introduction: "Sleep plays a vital role in maintaining mental and emotional well-being. Research shows that adequate sleep supports emotional regulation, cognitive functioning, and overall psychological balance.",
       sections: [
         {
           title: "Key Insights from Research",
@@ -250,7 +250,7 @@ export const articlesData: ArticleDetail[] = [
         },
         {
           title: "Practical Reflection",
-          content: "Maintaining healthy sleep habits, such as regular sleep schedules and limiting screen exposure before bedtime, can contribute to better emotional balance and daily functioning."
+          content: "Maintaining healthy sleep habits, such as regular sleep schedules and limiting screen exposure before bedtime, can contribute to better emotional balance."
         }
       ],
       references: [
@@ -258,4 +258,4 @@ export const articlesData: ArticleDetail[] = [
       ]
     }
   }
-]
+];

@@ -4,6 +4,10 @@ import { useState, useEffect } from "react"
 import DashboardNavbar from "@/components/dashboard/navbar"
 import { ProfileCard } from "@/components/profile/profile-card"
 import Link from "next/link"
+// IMPORT FIREBASE
+import { db, auth } from "@/lib/firebase"
+import { collection, query, where, getDocs, deleteDoc, doc, orderBy, limit } from "firebase/firestore"
+import { onAuthStateChanged } from "firebase/auth"
 
 interface ProfileData {
   name: string
@@ -16,6 +20,7 @@ interface ProfileData {
 }
 
 interface GetToKnowYouData {
+  id?: string 
   ageRange: string
   currentStatus: string[]
   livingSituation: string
@@ -25,7 +30,7 @@ interface GetToKnowYouData {
   bringYouHere: string[]
   feeling: string
   additionalInfo: string
-  submittedAt?: string
+  submittedAt?: any 
 }
 
 const profileData: ProfileData = {
@@ -41,35 +46,75 @@ const profileData: ProfileData = {
 export default function PersonalityTestPage() {
   const [getToKnowYouHistory, setGetToKnowYouHistory] = useState<GetToKnowYouData | null>(null)
   const [showDetails, setShowDetails] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Load data from localStorage when component mounts
-    const savedData = localStorage.getItem("getToKnowYouData")
-    if (savedData) {
-      try {
-        const data = JSON.parse(savedData)
-        setGetToKnowYouHistory(data)
-      } catch (error) {
-        console.error("Error loading saved data:", error)
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        fetchHistory(user.uid)
+      } else {
+        setLoading(false)
       }
-    }
+    })
+    return () => unsubscribe()
   }, [])
 
-  const handleDeleteHistory = () => {
-    if (confirm("Are you sure you want to delete this history? This action cannot be undone.")) {
-      localStorage.removeItem("getToKnowYouData")
-      setGetToKnowYouHistory(null)
-      setShowDetails(false)
+  const fetchHistory = async (userId: string) => {
+    try {
+      setLoading(true)
+      const q = query(
+        collection(db, "test_results"),
+        where("userId", "==", userId),
+        orderBy("createdAt", "desc"),
+        limit(1)
+      )
+      
+      const querySnapshot = await getDocs(q)
+      if (!querySnapshot.empty) {
+        const docData = querySnapshot.docs[0].data()
+        setGetToKnowYouHistory({
+          id: querySnapshot.docs[0].id,
+          ...docData,
+          submittedAt: docData.createdAt?.toDate().toISOString()
+        } as GetToKnowYouData)
+      } else {
+        setGetToKnowYouHistory(null)
+      }
+    } catch (error) {
+      console.error("Error loading Firebase data:", error)
+    } finally {
+      setLoading(false)
     }
+  }
+
+  const handleDeleteHistory = async () => {
+    if (confirm("Are you sure you want to delete this history? This action cannot be undone.")) {
+      try {
+        if (getToKnowYouHistory?.id) {
+          await deleteDoc(doc(db, "test_results", getToKnowYouHistory.id))
+          setGetToKnowYouHistory(null)
+          setShowDetails(false)
+        }
+      } catch (error) {
+        console.error("Error deleting document:", error)
+        alert("Gagal menghapus data.")
+      }
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-blue-100">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#d8a9ba]"></div>
+      </div>
+    )
   }
 
   return (
     <div className="min-h-screen flex flex-col bg-blue-100">
       <DashboardNavbar />
-
       <main className="flex-1 px-6 py-12 md:px-8 max-w-7xl mx-auto w-full">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Left Sidebar - Profile Card */}
           <div className="lg:col-span-1">
             <ProfileCard
               name={profileData.name}
@@ -82,10 +127,8 @@ export default function PersonalityTestPage() {
             />
           </div>
 
-          {/* Right Content - Personality Test Section */}
           <div className="lg:col-span-3">
             <div className="bg-white rounded-3xl p-8 md:p-12 shadow-lg">
-              {/* Decorative header line */}
               <div className="h-3 bg-[#d8a9ba] rounded-t-3xl -mx-8 -mt-8 mb-8 md:-mx-12 md:-mt-12" />
 
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Your Recent Personality Test</h1>
@@ -93,7 +136,6 @@ export default function PersonalityTestPage() {
                 You can view your most recent personality test results here.
               </p>
 
-              {/* Get to Know You History Section */}
               {getToKnowYouHistory ? (
                 <div className="bg-[#f5f5f5] rounded-2xl p-6 mb-8">
                   <div className="flex items-start justify-between mb-4">
@@ -129,7 +171,6 @@ export default function PersonalityTestPage() {
 
                   {showDetails && (
                     <div className="bg-white rounded-xl p-6 space-y-6 mt-4">
-                      {/* Basic Background */}
                       <div className="border-l-4 border-[#d8a9ba] pl-4">
                         <h3 className="font-bold text-gray-900 mb-3">Basic Background</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
@@ -144,7 +185,7 @@ export default function PersonalityTestPage() {
                           <div className="md:col-span-2">
                             <p className="text-gray-600">Current Status</p>
                             <p className="font-semibold text-gray-900">
-                              {getToKnowYouHistory.currentStatus.length > 0
+                              {getToKnowYouHistory.currentStatus && getToKnowYouHistory.currentStatus.length > 0
                                 ? getToKnowYouHistory.currentStatus.join(", ")
                                 : "-"}
                             </p>
@@ -152,7 +193,6 @@ export default function PersonalityTestPage() {
                         </div>
                       </div>
 
-                      {/* Personal Context */}
                       <div className="border-l-4 border-[#d8a9ba] pl-4">
                         <h3 className="font-bold text-gray-900 mb-3">Personal Context</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
@@ -163,7 +203,7 @@ export default function PersonalityTestPage() {
                           <div>
                             <p className="text-gray-600">Support System</p>
                             <p className="font-semibold text-gray-900">
-                              {getToKnowYouHistory.supportSystem.length > 0
+                              {getToKnowYouHistory.supportSystem && getToKnowYouHistory.supportSystem.length > 0
                                 ? getToKnowYouHistory.supportSystem.join(", ")
                                 : "-"}
                             </p>
@@ -177,14 +217,13 @@ export default function PersonalityTestPage() {
                         </div>
                       </div>
 
-                      {/* Current Situation */}
                       <div className="border-l-4 border-[#d8a9ba] pl-4">
                         <h3 className="font-bold text-gray-900 mb-3">Current Situation</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                           <div className="md:col-span-2">
                             <p className="text-gray-600">What brings you here?</p>
                             <p className="font-semibold text-gray-900">
-                              {getToKnowYouHistory.bringYouHere.length > 0
+                              {getToKnowYouHistory.bringYouHere && getToKnowYouHistory.bringYouHere.length > 0
                                 ? getToKnowYouHistory.bringYouHere.join(", ")
                                 : "-"}
                             </p>
@@ -212,16 +251,10 @@ export default function PersonalityTestPage() {
                     </p>
                   </div>
 
-                  {/* Empty State */}
                   <div className="border-2 border-gray-200 rounded-2xl py-16 px-8 text-center flex flex-col items-center justify-center">
                     <div className="w-24 h-24 bg-[#e8c9d5] rounded-lg flex items-center justify-center mb-6">
                       <svg className="w-12 h-12 text-[#d8a9ba]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1.5}
-                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                        />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
                     </div>
                     <h2 className="text-2xl font-bold text-gray-900 mb-2">No Test Result</h2>
@@ -230,12 +263,8 @@ export default function PersonalityTestPage() {
                 </>
               )}
 
-              {/* Back to Profile Link */}
               <div className="mt-8">
-                <Link
-                  href="/profile"
-                  className="inline-block bg-[#1a2e4a] text-white font-bold py-3 px-6 rounded-full hover:bg-[#0f1a2f] transition"
-                >
+                <Link href="/profile" className="inline-block bg-[#1a2e4a] text-white font-bold py-3 px-6 rounded-full hover:bg-[#0f1a2f] transition">
                   Back to Profile
                 </Link>
               </div>

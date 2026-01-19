@@ -1,5 +1,9 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { 
+  getAuth, 
+  setPersistence, 
+  browserLocalPersistence 
+} from "firebase/auth"; // Tambahkan import ini
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
@@ -12,9 +16,16 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID!,
 };
 
-// Cegah Firebase init berkali-kali
+// Inisialisasi App
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
 export const auth = getAuth(app);
+
+// TAMBAHKAN INI: Memastikan sesi disimpan secara lokal di browser
+if (typeof window !== "undefined") {
+  setPersistence(auth, browserLocalPersistence)
+    .catch((error) => console.error("Auth Persistence Error:", error));
+}
+
 export const db = getFirestore(app);
 export const storage = getStorage(app);

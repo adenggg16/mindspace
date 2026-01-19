@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-// import { db } from '@/lib/firebase';
-// import { collection, getDocs } from 'firebase/firestore';
+import { db } from '@/lib/firebase'; 
+import { collection, getDocs } from 'firebase/firestore';
 
 interface Consultation {
   id: string;
@@ -23,7 +23,7 @@ interface Payment {
 }
 
 export default function Reports() {
-  // Mock data
+  // Data Mock tetap disimpan sebagai nilai awal (Initial State)
   const [consultations, setConsultations] = useState<Consultation[]>([
     { id: '1', studentName: 'Khalisa Azzahra', psychologistName: 'Dr. Miftahul Jannah, M.Psi., Psikolog', date: new Date('2026-01-09'), status: 'scheduled', notes: 'Anxiety management' },
     { id: '2', studentName: 'Salsabila Adelia Putrie', psychologistName: 'Dr. Nadia Wulandari, M.Psi., Psikolog', date: new Date('2026-01-09'), status: 'scheduled', notes: 'Stress management' },
@@ -31,6 +31,7 @@ export default function Reports() {
     { id: '4', studentName: 'Muhammad', psychologistName: 'Dr. Miftahul Jannah, M.Psi., Psikolog', date: new Date('2026-01-11'), status: 'scheduled', notes: 'Relationship counseling' },
     { id: '5', studentName: 'Reyhan Zayyan', psychologistName: 'Dr. Nadia Wulandari, M.Psi., Psikolog', date: new Date('2026-01-13'), status: 'completed', notes: 'Self-esteem building' },
   ]);
+
   const [payments, setPayments] = useState<Payment[]>([
     { id: '1', studentName: 'Khalisa Azzahra', amount: 150000, status: 'confirmed', date: new Date('2026-01-09'), description: 'Consultation with Dr. Miftahul Jannah' },
     { id: '2', studentName: 'Salsabila Adelia Putrie', amount: 180000, status: 'confirmed', date: new Date('2026-01-08'), description: 'Consultation with Dr. Nadia Wulandari' },
@@ -38,60 +39,50 @@ export default function Reports() {
     { id: '4', studentName: 'Muhammad', amount: 150000, status: 'confirmed', date: new Date('2026-01-11'), description: 'Consultation with Dr. Miftahul Jannah' },
     { id: '5', studentName: 'Reyhan Zayyan', amount: 180000, status: 'confirmed', date: new Date('2026-01-13'), description: 'Consultation with Dr. Nadia Wulandari' },
   ]);
-  const [loading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   const fetchReports = async () => {
-  //     try {
-  //       // Fetch consultations
-  //       const consultationsSnapshot = await getDocs(collection(db, 'consultations'));
-  //       const consultationsData: Consultation[] = [];
-  //       consultationsSnapshot.forEach((doc) => {
-  //         const data = doc.data();
-  //         consultationsData.push({
-  //           id: doc.id,
-  //           studentName: data.studentName,
-  //           psychologistName: data.psychologistName,
-  //           date: data.date.toDate(),
-  //           status: data.status,
-  //           notes: data.notes,
-  //         });
-  //       });
-  //       setConsultations(consultationsData);
+  useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        // Ambil Consultations dari Firebase
+        const consultationsSnapshot = await getDocs(collection(db, 'consultations'));
+        if (!consultationsSnapshot.empty) {
+          const consultationsData: Consultation[] = consultationsSnapshot.docs.map(doc => ({
+            id: doc.id,
+            studentName: doc.data().studentName,
+            psychologistName: doc.data().psychologistName,
+            date: doc.data().date.toDate(),
+            status: doc.data().status,
+            notes: doc.data().notes,
+          }));
+          setConsultations(consultationsData); // Ganti data mock dengan data asli Firebase
+        }
 
-  //       // Fetch payments
-  //       const paymentsSnapshot = await getDocs(collection(db, 'payments'));
-  //       const paymentsData: Payment[] = [];
-  //       paymentsSnapshot.forEach((doc) => {
-  //         const data = doc.data();
-  //         paymentsData.push({
-  //           id: doc.id,
-  //           studentName: data.studentName,
-  //           amount: data.amount,
-  //           status: data.status,
-  //           date: data.date.toDate(),
-  //           description: data.description,
-  //         });
-  //       });
-  //       setPayments(paymentsData);
-  //     } catch (error) {
-  //       console.error('Error fetching reports:', error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+        // Ambil Payments dari Firebase
+        const paymentsSnapshot = await getDocs(collection(db, 'payments'));
+        if (!paymentsSnapshot.empty) {
+          const paymentsData: Payment[] = paymentsSnapshot.docs.map(doc => ({
+            id: doc.id,
+            studentName: doc.data().studentName,
+            amount: doc.data().amount,
+            status: doc.data().status,
+            date: doc.data().date.toDate(),
+            description: doc.data().description,
+          }));
+          setPayments(paymentsData); // Ganti data mock dengan data asli Firebase
+        }
+      } catch (error) {
+        console.error('Error fetching from Firebase, using mock data instead:', error);
+      }
+    };
 
-  //   fetchReports();
-  // }, []);
-
-  // if (loading) {
-  //   return <div className="text-center">Loading...</div>;
-  // }
+    fetchReports();
+  }, []);
 
   return (
     <div>
       <h1 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-8">Reports</h1>
 
+      {/* Tampilan Konsultasi */}
       <div className="mb-8">
         <h2 className="text-2xl font-bold mb-4 text-gray-800">Consultation History</h2>
         <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-white/30 overflow-hidden">
@@ -120,6 +111,7 @@ export default function Reports() {
         </div>
       </div>
 
+      {/* Tampilan Pembayaran */}
       <div>
         <h2 className="text-2xl font-bold mb-4 text-gray-800">Payment History</h2>
         <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-white/30 overflow-hidden">
@@ -146,8 +138,7 @@ export default function Reports() {
                       payment.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
                       'bg-red-100 text-red-800'
                     }`}>
-                      {payment.status === 'confirmed' ? 'Confirmed' :
-                       payment.status === 'pending' ? 'Pending' : 'Cancelled'}
+                      {payment.status.charAt(0).toUpperCase() + payment.status.slice(1)}
                     </span>
                   </td>
                 </tr>
