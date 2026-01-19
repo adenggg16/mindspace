@@ -22,21 +22,52 @@ export default function SignUpPage() {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (password !== confirmPassword) { alert("Password tidak cocok!"); return; }
+    
+    // Validasi tambahan sebelum kirim ke Firebase
+    if (password.length < 6) {
+      alert("Password minimal 6 karakter!");
+      return;
+    }
+
+    if (password !== confirmPassword) { 
+      alert("Password tidak cocok!"); 
+      return; 
+    }
+    
     setIsLoading(true)
     try {
+      // 1. Buat User di Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(auth, email, password)
       const user = userCredential.user
+
+      // 2. Tentukan koleksi berdasarkan role
       const targetCollection = role === "Psikolog" ? "psychologists" : "users"
+
+      // 3. Simpan data tambahan ke Firestore
+      // Menggunakan UID dari Auth sebagai ID dokumen agar sinkron
       await setDoc(doc(db, targetCollection, user.uid), {
+        uid: user.uid,
         fullName: "User Baru MindSpace",
         email: email,
         phoneNumber: phone,
         role: role, 
+        specialization: role === "Psikolog" ? ["Anxiety", "Depression"] : [],
         createdAt: new Date().toISOString()
       })
+
+      alert(`Pendaftaran ${role} Berhasil! 🎉`)
       router.push("/login")
-    } catch (error: any) { alert("Gagal mendaftar!") } finally { setIsLoading(false) }
+    } catch (error: any) { 
+      console.error(error)
+      // Memberikan pesan error yang lebih jelas kepada user
+      if (error.code === "auth/email-already-in-use") {
+        alert("E-mail sudah terdaftar!");
+      } else {
+        alert("Gagal mendaftar: " + error.message) 
+      }
+    } finally { 
+      setIsLoading(false) 
+    }
   }
 
   return (
@@ -47,56 +78,61 @@ export default function SignUpPage() {
         </svg>
       </div>
 
-      <div className="relative z-10 w-full max-w-md px-4 md:px-6">
-        <div className="bg-white/90 backdrop-blur-sm p-6 md:p-8 rounded-xl md:rounded-2xl shadow-2xl border border-gray-200 relative">
+      <div className="relative z-10 w-full max-w-sm px-4">
+        <div className="bg-white/90 backdrop-blur-sm p-5 md:p-6 rounded-xl shadow-2xl border border-gray-100 relative">
           
-          {/* Logo menggantikan Ikon Pink */}
-          <div className="flex justify-center mb-4 mt-2">
+          <div className="flex justify-center mb-2 mt-1">
             <Image 
               src="/images/logo.png" 
               alt="MindSpace Logo" 
-              width={150} 
-              height={50} 
+              width={110} 
+              height={40} 
               className="object-contain"
             />
           </div>
 
-          <div className="flex justify-center gap-4 py-2 mb-2">
+          <div className="flex justify-center gap-4 py-1 mb-1">
             <label className="flex items-center gap-2 cursor-pointer group">
-              <input type="radio" name="role" value="Student" checked={role === "Student"} onChange={(e) => setRole(e.target.value)} className="w-4 h-4 accent-black" />
-              <span className={`text-xs font-bold ${role === "Student" ? "text-black" : "text-gray-400"}`}>STUDENT</span>
+              <input type="radio" name="role" value="Student" checked={role === "Student"} onChange={(e) => setRole(e.target.value)} className="w-3.5 h-3.5 accent-black" />
+              <span className={`text-[10px] font-bold ${role === "Student" ? "text-black" : "text-gray-400"}`}>STUDENT</span>
             </label>
             <label className="flex items-center gap-2 cursor-pointer group">
-              <input type="radio" name="role" value="Psikolog" checked={role === "Psikolog"} onChange={(e) => setRole(e.target.value)} className="w-4 h-4 accent-black" />
-              <span className={`text-xs font-bold ${role === "Psikolog" ? "text-black" : "text-gray-400"}`}>PSIKOLOG</span>
+              <input type="radio" name="role" value="Psikolog" checked={role === "Psikolog"} onChange={(e) => setRole(e.target.value)} className="w-3.5 h-3.5 accent-black" />
+              <span className={`text-[10px] font-bold ${role === "Psikolog" ? "text-black" : "text-gray-400"}`}>PSIKOLOG</span>
             </label>
           </div>
 
-          <h2 className="text-3xl md:text-4xl font-black text-center mb-6 md:mb-8 tracking-tighter text-[#1e293b]">SIGN UP</h2>
+          <h2 className="text-2xl md:text-3xl font-black text-center mb-4 tracking-tighter text-[#1e293b]">SIGN UP</h2>
 
-          <form onSubmit={handleSignUp} className="space-y-3 md:space-y-4">
+          <form onSubmit={handleSignUp} className="space-y-2.5">
             <div className="relative">
-              <Input type="email" placeholder="E-mail" className="pr-10 border-2 border-black rounded-none h-10 md:h-11 text-sm md:text-base focus-visible:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]" onChange={(e) => setEmail(e.target.value)} required />
-              <Mail className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
+              <Input type="email" placeholder="E-mail" className="pr-9 border-[1.5px] border-black rounded-none h-9 text-xs focus-visible:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]" onChange={(e) => setEmail(e.target.value)} required />
+              <Mail className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={14} />
             </div>
             <div className="relative">
-              <Input type="tel" placeholder="Phone Number" className="pr-10 border-2 border-black rounded-none h-10 md:h-11 text-sm md:text-base focus-visible:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]" onChange={(e) => setPhone(e.target.value)} required />
-              <Phone className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
+              <Input type="tel" placeholder="Phone Number" className="pr-9 border-[1.5px] border-black rounded-none h-9 text-xs focus-visible:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]" onChange={(e) => setPhone(e.target.value)} required />
+              <Phone className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={14} />
             </div>
             <div className="relative">
-              <Input type="password" placeholder="Password" className="pr-10 border-2 border-black rounded-none h-10 md:h-11 text-sm md:text-base focus-visible:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]" onChange={(e) => setPassword(e.target.value)} required />
-              <Lock className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
+              <Input type="password" placeholder="Password" className="pr-9 border-[1.5px] border-black rounded-none h-9 text-xs focus-visible:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]" onChange={(e) => setPassword(e.target.value)} required />
+              <Lock className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={14} />
             </div>
             <div className="relative">
-              <Input type="password" placeholder="Confirm Password" className="pr-10 border-2 border-black rounded-none h-10 md:h-11 text-sm md:text-base focus-visible:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]" onChange={(e) => setConfirmPassword(e.target.value)} required />
-              <Lock className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
+              <Input type="password" placeholder="Confirm Password" className="pr-9 border-[1.5px] border-black rounded-none h-9 text-xs focus-visible:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]" onChange={(e) => setConfirmPassword(e.target.value)} required />
+              <Lock className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={14} />
             </div>
-            <div className="text-[10px] text-right text-gray-600 italic">
+            
+            <div className="text-[9px] text-right text-gray-600 italic">
               Already have an account? <Link href="/login" className="font-bold text-black underline">Login</Link>
             </div>
-            <div className="flex justify-center pt-2">
-              <Button type="submit" disabled={isLoading} className="w-28 md:w-32 bg-white text-xs md:text-sm text-black border-2 border-black hover:bg-gray-100 font-bold rounded-full shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-transform active:translate-y-1 active:shadow-none">
-                {isLoading ? "LOADING..." : "SIGN UP"}
+
+            <div className="flex justify-center pt-1">
+              <Button 
+                type="submit" 
+                disabled={isLoading} 
+                className="w-24 bg-white text-[11px] text-black border-[1.5px] border-black hover:bg-gray-100 font-bold rounded-full shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-transform active:translate-y-0.5 active:shadow-none py-1 h-8"
+              >
+                {isLoading ? "PROSES..." : "SIGN UP"}
               </Button>
             </div>
           </form>
