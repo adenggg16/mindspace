@@ -144,7 +144,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="relative z-10 bg-white py-8 md:py-12 text-center shadow-lg">
        <div className="max-w-6xl mx-auto px-4 md:px-6">
-          <p className="text-sm md:text-base text-gray-900">&copy; 2025 MindSpace. All rights reserved.</p>
+          <p className="text-sm md:text-base text-gray-900">&copy; 2026 MindSpace. All rights reserved.</p>
         </div>
       </footer>
     </div>
